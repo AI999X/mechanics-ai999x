@@ -4,7 +4,7 @@
 
 **[Install](https://pypi.org/project/mechanics-ai999x/)** · **[Capability guide](https://huggingface.co/AI999X/mechanics-ai999x/tree/main/docs)** · **[Evaluation](https://huggingface.co/AI999X/mechanics-ai999x/tree/main/evaluation)** · **[AI999X on Hugging Face](https://huggingface.co/AI999X)** · **[Website](https://ai999x.com)** · **[Support: Buy Me a Coffee](https://buymeacoffee.com/ibnuljaiffarabi)**
 
-License: Apache-2.0 · Author: Ibnul Jaif Farabi (creator and engineer) · Organization: AI999X · Version 1.0.0
+License: Apache-2.0 · Author: Ibnul Jaif Farabi (creator and engineer) · Organization: AI999X · Version 1.0.1
 
 mechanics-ai999x is an offline, deterministic Python solver that answers classical mechanics questions with verified results from 25 certified capabilities, gives 234 documented answers identically on Windows and Linux, and refuses rather than guesses when an answer cannot be verified.
 
@@ -25,7 +25,7 @@ mechanics-ai999x is an offline, deterministic Python solver that answers classic
 
 | Property | Value |
 |---|---|
-| Package | `mechanics-ai999x` 1.0.0 (import `mechanics_ai999x`) |
+| Package | `mechanics-ai999x` 1.0.1 (import `mechanics_ai999x`) |
 | Type | Deterministic neuro-symbolic classical mechanics engine (rule-based reading + certified symbolic capabilities) |
 | Capabilities | 25 certified relations |
 | Knowledge pack | version 0.1.0 |
@@ -43,23 +43,23 @@ pip install mechanics-ai999x
 ```
 
 ```python
-import mechanics_ai999x as classical mechanics
+import mechanics_ai999x as mechanics
 
-classical mechanics.ask("A 2 kg mass on a spring with a spring constant of 50 N/m has a damping coefficient of 4 kg/s. What is the damped angular frequency?").show()
+mechanics.ask("A 2 kg mass on a spring with a spring constant of 50 N/m has a damping coefficient of 4 kg/s. What is the damped angular frequency?").show()
 # -> SOLVED — 4.89898 rad/s  (damped_angular_frequency)
-classical mechanics.ask("What is the escape speed from a planet of mass 5.972e24 kg and radius 6.371e6 m?").show()
+mechanics.ask("What is the escape speed from a planet of mass 5.972e24 kg and radius 6.371e6 m?").show()
 # -> SOLVED — 11186 m/s  (escape_speed)
-classical mechanics.ask("A rocket with an exhaust velocity of 3000 m/s has an initial mass of 1000 kg and a final mass of 400 kg after the burn. What is its change in velocity?").show()
+mechanics.ask("A rocket with an exhaust velocity of 3000 m/s has an initial mass of 1000 kg and a final mass of 400 kg after the burn. What is its change in velocity?").show()
 # -> SOLVED — 2748.87 m/s  (rocket_delta_v)
-classical mechanics.solve("rocket_delta_v", ve="3000 m/s", m0="1000 kg", mf="400 kg").show()
+mechanics.solve("rocket_delta_v", ve="3000 m/s", m0="1000 kg", mf="400 kg").show()
 # -> SOLVED — 2748.87 m/s  (rocket_delta_v)
-classical mechanics.ask("What is the escape speed from a planet of mass 5.972e24 kg?").show()
+mechanics.ask("What is the escape speed from a planet of mass 5.972e24 kg?").show()
 # -> NEEDS_INPUT — Escape speed applies, but it needs: distance from its center (m). Add it to the question with its unit, or use
-classical mechanics.ask("Who created you?").message
+mechanics.ask("Who created you?").message
 # -> mechanics-ai999x was created and engineered by Ibnul Jaif Farabi at AI999X.
 ```
 
-Command line: `mechanics-ai999x "<question>"`, `mechanics-ai999x --capabilities`. The outputs above were produced by running this exact code on mechanics-ai999x 1.0.0.
+Command line: `mechanics-ai999x "<question>"`, `mechanics-ai999x --capabilities`. The outputs above were produced by running this exact code on mechanics-ai999x 1.0.1.
 
 ## How every answer is verified
 
@@ -93,10 +93,10 @@ Capabilities are certified before they ship: each must reproduce hand-worked ref
 ## Citation
 
 ```bibtex
-@software{mechanics_ai999x_1_0_0,
+@software{mechanics_ai999x_1_0_1,
   title  = {mechanics-ai999x: an offline, verified classical mechanics solver},
   author = {Farabi, Ibnul Jaif}, organization = {AI999X},
-  year   = {2026}, version = {1.0.0},
+  year   = {2026}, version = {1.0.1},
   url    = {https://huggingface.co/AI999X/mechanics-ai999x}
 }
 ```

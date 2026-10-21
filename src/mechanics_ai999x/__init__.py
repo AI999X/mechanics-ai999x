@@ -23,7 +23,7 @@ except ImportError:                        # the factory's source tree, during d
     from ai999x_factory.runtime import Answer
     from ai999x_factory.runtime.product import Product
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"     # 1.0.1 (2026-10-21): the card's code examples import as `mechanics`; 1.0.0 on 2026-10-21
 _P = Product("mechanics", [Path(__file__).resolve().parent / "pack", Path(__file__).resolve().parents[3]])
 pack, ask, solve, compile_problem = _P.pack, _P.ask, _P.solve, _P.compile_problem
 formula, formulas, quantities, conditions, capabilities = _P.formula, _P.formulas, _P.quantities, _P.conditions, _P.capabilities
