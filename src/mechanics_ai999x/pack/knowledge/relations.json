@@ -1,0 +1,1402 @@
+{
+ "domain": "mechanics",
+ "version": "0.1.0",
+ "relations": [
+  {
+   "key": "damped_angular_frequency",
+   "family": "oscillations",
+   "name": "Angular frequency of a damped oscillator",
+   "equation": "wd = sqrt(k/m - b**2/(4*m**2))",
+   "symbols": {
+    "wd": {
+     "kind": "angular_frequency",
+     "role": "damped",
+     "sign": "positive",
+     "desc": "angular frequency of the damped oscillation"
+    },
+    "k": {
+     "kind": "spring_constant",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "spring constant"
+    },
+    "m": {
+     "kind": "mass",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "oscillating mass"
+    },
+    "b": {
+     "kind": "damping",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "viscous damping coefficient"
+    }
+   },
+   "assumptions": [
+    "linear viscous damping",
+    "underdamped (b^2 < 4 k m)"
+   ],
+   "requires": [
+    "damped"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "a mass on a linear spring with viscous damping"
+   ],
+   "fails_when": [
+    "critical or over-damping"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/damped_angular_frequency.json",
+   "category": "theorem"
+  },
+  {
+   "key": "damping_ratio",
+   "family": "oscillations",
+   "name": "Damping ratio",
+   "equation": "zeta = b/(2*sqrt(k*m))",
+   "symbols": {
+    "zeta": {
+     "kind": "damping_ratio",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "damping ratio"
+    },
+    "b": {
+     "kind": "damping",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "viscous damping coefficient"
+    },
+    "k": {
+     "kind": "spring_constant",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "spring constant"
+    },
+    "m": {
+     "kind": "mass",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "oscillating mass"
+    }
+   },
+   "assumptions": [
+    "linear viscous damping"
+   ],
+   "requires": [
+    "damped"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "a damped mass-spring system"
+   ],
+   "fails_when": [
+    "nonlinear damping"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/damping_ratio.json",
+   "category": "theorem"
+  },
+  {
+   "key": "quality_factor",
+   "family": "oscillations",
+   "name": "Quality factor of a damped oscillator",
+   "equation": "Qf = sqrt(k*m)/b",
+   "symbols": {
+    "Qf": {
+     "kind": "quality_factor",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "quality factor"
+    },
+    "k": {
+     "kind": "spring_constant",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "spring constant"
+    },
+    "m": {
+     "kind": "mass",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "oscillating mass"
+    },
+    "b": {
+     "kind": "damping",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "viscous damping coefficient"
+    }
+   },
+   "assumptions": [
+    "linear viscous damping"
+   ],
+   "requires": [
+    "damped"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "a damped mass-spring system"
+   ],
+   "fails_when": [
+    "nonlinear damping"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/quality_factor.json",
+   "category": "theorem"
+  },
+  {
+   "key": "driven_amplitude",
+   "family": "oscillations",
+   "name": "Steady-state amplitude of a driven damped oscillator",
+   "equation": "A = F0/sqrt((k - m*w**2)**2 + (b*w)**2)",
+   "symbols": {
+    "A": {
+     "kind": "length",
+     "role": "amplitude",
+     "sign": "positive",
+     "desc": "steady-state amplitude"
+    },
+    "F0": {
+     "kind": "force",
+     "role": "driving",
+     "sign": "positive",
+     "desc": "driving force amplitude"
+    },
+    "k": {
+     "kind": "spring_constant",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "spring constant"
+    },
+    "m": {
+     "kind": "mass",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "oscillating mass"
+    },
+    "b": {
+     "kind": "damping",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "viscous damping coefficient"
+    },
+    "w": {
+     "kind": "angular_frequency",
+     "role": "driving",
+     "sign": "positive",
+     "desc": "driving angular frequency"
+    }
+   },
+   "assumptions": [
+    "sinusoidal driving force",
+    "linear viscous damping",
+    "steady state (transients have died out)"
+   ],
+   "requires": [
+    "driven"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "a damped mass-spring system driven by a sinusoidal force"
+   ],
+   "fails_when": [
+    "before the transients decay"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/driven_amplitude.json",
+   "category": "theorem"
+  },
+  {
+   "key": "amplitude_resonance_frequency",
+   "family": "oscillations",
+   "name": "Amplitude-resonance frequency of a driven damped oscillator",
+   "equation": "wr = sqrt(k/m - b**2/(2*m**2))",
+   "symbols": {
+    "wr": {
+     "kind": "angular_frequency",
+     "role": "resonance",
+     "sign": "positive",
+     "desc": "driving frequency of maximum amplitude"
+    },
+    "k": {
+     "kind": "spring_constant",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "spring constant"
+    },
+    "m": {
+     "kind": "mass",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "oscillating mass"
+    },
+    "b": {
+     "kind": "damping",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "viscous damping coefficient"
+    }
+   },
+   "assumptions": [
+    "sinusoidal driving",
+    "linear viscous damping",
+    "b^2 < 2 k m"
+   ],
+   "requires": [
+    "driven"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "the driving frequency that maximises the steady-state amplitude"
+   ],
+   "fails_when": [
+    "b^2 >= 2 k m (no resonance peak)"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/amplitude_resonance_frequency.json",
+   "category": "theorem"
+  },
+  {
+   "key": "coupled_fast_mode",
+   "family": "oscillations",
+   "name": "Higher normal-mode frequency of two coupled oscillators",
+   "equation": "w2 = sqrt((k + 2*kc)/m)",
+   "symbols": {
+    "w2": {
+     "kind": "angular_frequency",
+     "role": "mode_fast",
+     "sign": "positive",
+     "desc": "higher normal-mode angular frequency"
+    },
+    "k": {
+     "kind": "spring_constant",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "each outer spring's constant"
+    },
+    "kc": {
+     "kind": "spring_constant",
+     "role": "coupling",
+     "sign": "positive",
+     "desc": "coupling spring constant"
+    },
+    "m": {
+     "kind": "mass",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "each mass"
+    }
+   },
+   "assumptions": [
+    "two identical masses",
+    "identical outer springs",
+    "small oscillations, no damping"
+   ],
+   "requires": [
+    "coupled"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "two equal masses joined by a coupling spring, each also tied to a wall"
+   ],
+   "fails_when": [
+    "unequal masses or springs"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/coupled_fast_mode.json",
+   "category": "theorem"
+  },
+  {
+   "key": "physical_pendulum_period",
+   "family": "oscillations",
+   "name": "Period of a physical pendulum",
+   "equation": "T = 2*pi*sqrt(Ir/(m*g*d))",
+   "symbols": {
+    "T": {
+     "kind": "time",
+     "role": "period",
+     "sign": "positive",
+     "desc": "small-oscillation period"
+    },
+    "Ir": {
+     "kind": "moment_of_inertia",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "moment of inertia about the pivot"
+    },
+    "m": {
+     "kind": "mass",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "mass of the body"
+    },
+    "g": {
+     "kind": "acceleration",
+     "role": "gravity",
+     "sign": "positive",
+     "default": {
+      "value": 9.80665,
+      "unit": "m/s^2",
+      "assumption": "standard gravity g = 9.80665 m/s^2 near Earth's surface",
+      "unless": [
+       "non_earth"
+      ]
+     }
+    },
+    "d": {
+     "kind": "length",
+     "role": "pivot_cm",
+     "sign": "positive",
+     "desc": "distance from the pivot to the center of mass"
+    }
+   },
+   "assumptions": [
+    "small oscillations",
+    "no friction at the pivot"
+   ],
+   "requires": [
+    "physical_pendulum"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "a rigid body swinging about a fixed pivot"
+   ],
+   "fails_when": [
+    "large amplitudes"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/physical_pendulum_period.json",
+   "category": "theorem"
+  },
+  {
+   "key": "double_pendulum_slow_mode",
+   "family": "oscillations",
+   "name": "Lower normal mode of a double pendulum",
+   "equation": "w = sqrt((2 - sqrt(2))*g/L)",
+   "symbols": {
+    "w": {
+     "kind": "angular_frequency",
+     "role": "mode_slow",
+     "sign": "positive",
+     "desc": "lower normal-mode angular frequency"
+    },
+    "g": {
+     "kind": "acceleration",
+     "role": "gravity",
+     "sign": "positive",
+     "default": {
+      "value": 9.80665,
+      "unit": "m/s^2",
+      "assumption": "standard gravity g = 9.80665 m/s^2 near Earth's surface",
+      "unless": [
+       "non_earth"
+      ]
+     }
+    },
+    "L": {
+     "kind": "length",
+     "role": "pendulum",
+     "sign": "positive",
+     "desc": "length of each arm"
+    }
+   },
+   "assumptions": [
+    "equal masses and arm lengths",
+    "small oscillations"
+   ],
+   "requires": [
+    "double_pendulum"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "a double pendulum with equal masses and arms"
+   ],
+   "fails_when": [
+    "large amplitudes (chaotic motion)"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/double_pendulum_slow_mode.json",
+   "category": "theorem"
+  },
+  {
+   "key": "double_pendulum_fast_mode",
+   "family": "oscillations",
+   "name": "Higher normal mode of a double pendulum",
+   "equation": "w = sqrt((2 + sqrt(2))*g/L)",
+   "symbols": {
+    "w": {
+     "kind": "angular_frequency",
+     "role": "mode_fast",
+     "sign": "positive",
+     "desc": "higher normal-mode angular frequency"
+    },
+    "g": {
+     "kind": "acceleration",
+     "role": "gravity",
+     "sign": "positive",
+     "default": {
+      "value": 9.80665,
+      "unit": "m/s^2",
+      "assumption": "standard gravity g = 9.80665 m/s^2 near Earth's surface",
+      "unless": [
+       "non_earth"
+      ]
+     }
+    },
+    "L": {
+     "kind": "length",
+     "role": "pendulum",
+     "sign": "positive",
+     "desc": "length of each arm"
+    }
+   },
+   "assumptions": [
+    "equal masses and arm lengths",
+    "small oscillations"
+   ],
+   "requires": [
+    "double_pendulum"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "a double pendulum with equal masses and arms"
+   ],
+   "fails_when": [
+    "large amplitudes (chaotic motion)"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/double_pendulum_fast_mode.json",
+   "category": "theorem"
+  },
+  {
+   "key": "vis_viva",
+   "family": "orbits",
+   "name": "Orbital speed on an elliptical orbit (vis-viva)",
+   "equation": "v = sqrt(G*M*(2/r - 1/a))",
+   "symbols": {
+    "v": {
+     "kind": "speed",
+     "role": "orbital",
+     "sign": "positive",
+     "desc": "orbital speed at distance r"
+    },
+    "G": {
+     "kind": "gravitational_constant",
+     "role": "constant",
+     "sign": "positive",
+     "default": {
+      "value": 6.6743e-11,
+      "unit": "N*m^2/kg^2",
+      "assumption": "the gravitational constant G = 6.674e-11 N*m^2/kg^2",
+      "unless": []
+     }
+    },
+    "M": {
+     "kind": "mass",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "mass of the central body"
+    },
+    "r": {
+     "kind": "length",
+     "role": "radius",
+     "sign": "positive",
+     "desc": "distance from the center of the central body"
+    },
+    "a": {
+     "kind": "length",
+     "role": "semi_major",
+     "sign": "positive",
+     "desc": "semi-major axis"
+    }
+   },
+   "assumptions": [
+    "two bodies, the orbiting one much lighter",
+    "a bound (elliptical) orbit"
+   ],
+   "requires": [
+    "orbit"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "a satellite or planet on an elliptical orbit"
+   ],
+   "fails_when": [
+    "unbound orbits",
+    "comparable masses"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/vis_viva.json",
+   "category": "theorem"
+  },
+  {
+   "key": "escape_speed",
+   "family": "orbits",
+   "name": "Escape speed",
+   "equation": "v = sqrt(2*G*M/r)",
+   "symbols": {
+    "v": {
+     "kind": "speed",
+     "role": "escape",
+     "sign": "positive",
+     "desc": "escape speed"
+    },
+    "G": {
+     "kind": "gravitational_constant",
+     "role": "constant",
+     "sign": "positive",
+     "default": {
+      "value": 6.6743e-11,
+      "unit": "N*m^2/kg^2",
+      "assumption": "the gravitational constant G = 6.674e-11 N*m^2/kg^2",
+      "unless": []
+     }
+    },
+    "M": {
+     "kind": "mass",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "mass of the body"
+    },
+    "r": {
+     "kind": "length",
+     "role": "radius",
+     "sign": "positive",
+     "desc": "distance from its center"
+    }
+   },
+   "assumptions": [
+    "no air resistance",
+    "a spherically symmetric body",
+    "starting from rest relative to it"
+   ],
+   "requires": [
+    "escape"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "leaving a body's gravity from distance r"
+   ],
+   "fails_when": [
+    "atmospheric drag",
+    "other bodies' gravity"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/escape_speed.json",
+   "category": "theorem"
+  },
+  {
+   "key": "kepler_period_semi_major",
+   "family": "orbits",
+   "name": "Orbital period from the semi-major axis (Kepler's third law)",
+   "equation": "T = 2*pi*sqrt(a**3/(G*M))",
+   "symbols": {
+    "T": {
+     "kind": "time",
+     "role": "period",
+     "sign": "positive",
+     "desc": "orbital period"
+    },
+    "a": {
+     "kind": "length",
+     "role": "semi_major",
+     "sign": "positive",
+     "desc": "semi-major axis"
+    },
+    "G": {
+     "kind": "gravitational_constant",
+     "role": "constant",
+     "sign": "positive",
+     "default": {
+      "value": 6.6743e-11,
+      "unit": "N*m^2/kg^2",
+      "assumption": "the gravitational constant G = 6.674e-11 N*m^2/kg^2",
+      "unless": []
+     }
+    },
+    "M": {
+     "kind": "mass",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "mass of the central body"
+    }
+   },
+   "assumptions": [
+    "two bodies, the orbiting one much lighter"
+   ],
+   "requires": [
+    "orbit"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "any bound elliptical orbit"
+   ],
+   "fails_when": [
+    "comparable masses (use the total mass)"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/kepler_period_semi_major.json",
+   "category": "theorem"
+  },
+  {
+   "key": "inertia_solid_sphere",
+   "family": "rigid_body",
+   "name": "Moment of inertia of a solid sphere",
+   "equation": "Ir = 2*m*R**2/5",
+   "symbols": {
+    "Ir": {
+     "kind": "moment_of_inertia",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "moment of inertia about the central axis"
+    },
+    "m": {
+     "kind": "mass",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "mass"
+    },
+    "R": {
+     "kind": "length",
+     "role": "radius",
+     "sign": "positive",
+     "desc": "radius"
+    }
+   },
+   "assumptions": [
+    "uniform density",
+    "the axis through the center (the symmetry axis for a disk)"
+   ],
+   "requires": [
+    "solid_sphere"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "a uniform solid sphere"
+   ],
+   "fails_when": [
+    "non-uniform density",
+    "another axis (use the parallel-axis theorem)"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/inertia_solid_sphere.json",
+   "category": "theorem"
+  },
+  {
+   "key": "inertia_hollow_sphere",
+   "family": "rigid_body",
+   "name": "Moment of inertia of a thin spherical shell",
+   "equation": "Ir = 2*m*R**2/3",
+   "symbols": {
+    "Ir": {
+     "kind": "moment_of_inertia",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "moment of inertia about the central axis"
+    },
+    "m": {
+     "kind": "mass",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "mass"
+    },
+    "R": {
+     "kind": "length",
+     "role": "radius",
+     "sign": "positive",
+     "desc": "radius"
+    }
+   },
+   "assumptions": [
+    "uniform density",
+    "the axis through the center (the symmetry axis for a disk)"
+   ],
+   "requires": [
+    "hollow_sphere"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "a uniform hollow sphere"
+   ],
+   "fails_when": [
+    "non-uniform density",
+    "another axis (use the parallel-axis theorem)"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/inertia_hollow_sphere.json",
+   "category": "theorem"
+  },
+  {
+   "key": "inertia_solid_disk",
+   "family": "rigid_body",
+   "name": "Moment of inertia of a solid disk about its axis",
+   "equation": "Ir = m*R**2/2",
+   "symbols": {
+    "Ir": {
+     "kind": "moment_of_inertia",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "moment of inertia about the central axis"
+    },
+    "m": {
+     "kind": "mass",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "mass"
+    },
+    "R": {
+     "kind": "length",
+     "role": "radius",
+     "sign": "positive",
+     "desc": "radius"
+    }
+   },
+   "assumptions": [
+    "uniform density",
+    "the axis through the center (the symmetry axis for a disk)"
+   ],
+   "requires": [
+    "solid_disk"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "a uniform solid disk"
+   ],
+   "fails_when": [
+    "non-uniform density",
+    "another axis (use the parallel-axis theorem)"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/inertia_solid_disk.json",
+   "category": "theorem"
+  },
+  {
+   "key": "inertia_rod_center",
+   "family": "rigid_body",
+   "name": "Moment of inertia of a thin rod about its center",
+   "equation": "Ir = m*Lr**2/12",
+   "symbols": {
+    "Ir": {
+     "kind": "moment_of_inertia",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "moment of inertia about its center"
+    },
+    "m": {
+     "kind": "mass",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "mass of the rod"
+    },
+    "Lr": {
+     "kind": "length",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "length of the rod"
+    }
+   },
+   "assumptions": [
+    "a thin uniform rod",
+    "the axis perpendicular to the rod"
+   ],
+   "requires": [
+    "rod",
+    "about_center"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "a thin uniform rod rotating about its center"
+   ],
+   "fails_when": [
+    "a thick rod",
+    "a non-uniform rod"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/inertia_rod_center.json",
+   "category": "theorem"
+  },
+  {
+   "key": "inertia_rod_end",
+   "family": "rigid_body",
+   "name": "Moment of inertia of a thin rod about one end",
+   "equation": "Ir = m*Lr**2/3",
+   "symbols": {
+    "Ir": {
+     "kind": "moment_of_inertia",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "moment of inertia about one end"
+    },
+    "m": {
+     "kind": "mass",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "mass of the rod"
+    },
+    "Lr": {
+     "kind": "length",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "length of the rod"
+    }
+   },
+   "assumptions": [
+    "a thin uniform rod",
+    "the axis perpendicular to the rod"
+   ],
+   "requires": [
+    "rod",
+    "about_end"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "a thin uniform rod rotating about one end"
+   ],
+   "fails_when": [
+    "a thick rod",
+    "a non-uniform rod"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/inertia_rod_end.json",
+   "category": "theorem"
+  },
+  {
+   "key": "rolling_incline_acceleration",
+   "family": "rigid_body",
+   "name": "Acceleration of a body rolling without slipping down an incline",
+   "equation": "a = g*sin(theta)/(1 + Ir/(m*R**2))",
+   "symbols": {
+    "a": {
+     "kind": "acceleration",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "acceleration of the center of mass along the incline"
+    },
+    "g": {
+     "kind": "acceleration",
+     "role": "gravity",
+     "sign": "positive",
+     "default": {
+      "value": 9.80665,
+      "unit": "m/s^2",
+      "assumption": "standard gravity g = 9.80665 m/s^2 near Earth's surface",
+      "unless": [
+       "non_earth"
+      ]
+     }
+    },
+    "theta": {
+     "kind": "angle",
+     "role": "incline",
+     "sign": "positive",
+     "desc": "angle of the incline"
+    },
+    "Ir": {
+     "kind": "moment_of_inertia",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "moment of inertia about the center"
+    },
+    "m": {
+     "kind": "mass",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "mass"
+    },
+    "R": {
+     "kind": "length",
+     "role": "radius",
+     "sign": "positive",
+     "desc": "rolling radius"
+    }
+   },
+   "assumptions": [
+    "rolling without slipping",
+    "no rolling resistance"
+   ],
+   "requires": [
+    "rolling"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "a round body rolling down a straight incline"
+   ],
+   "fails_when": [
+    "slipping",
+    "rolling resistance"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/rolling_incline_acceleration.json",
+   "category": "theorem"
+  },
+  {
+   "key": "atwood_massive_pulley",
+   "family": "rigid_body",
+   "name": "Acceleration of an Atwood machine with a massive pulley",
+   "equation": "a = (m1 - m2)*g/(m1 + m2 + Ir/R**2)",
+   "symbols": {
+    "a": {
+     "kind": "acceleration",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "acceleration of each mass"
+    },
+    "m1": {
+     "kind": "mass",
+     "role": "heavy",
+     "sign": "positive",
+     "desc": "heavier mass"
+    },
+    "m2": {
+     "kind": "mass",
+     "role": "light",
+     "sign": "positive",
+     "desc": "lighter mass"
+    },
+    "g": {
+     "kind": "acceleration",
+     "role": "gravity",
+     "sign": "positive",
+     "default": {
+      "value": 9.80665,
+      "unit": "m/s^2",
+      "assumption": "standard gravity g = 9.80665 m/s^2 near Earth's surface",
+      "unless": [
+       "non_earth"
+      ]
+     }
+    },
+    "Ir": {
+     "kind": "moment_of_inertia",
+     "role": "plain",
+     "sign": "positive",
+     "desc": "moment of inertia of the pulley"
+    },
+    "R": {
+     "kind": "length",
+     "role": "radius",
+     "sign": "positive",
+     "desc": "radius of the pulley"
+    }
+   },
+   "assumptions": [
+    "a massless string that does not slip on the pulley",
+    "a frictionless axle"
+   ],
+   "requires": [
+    "atwood"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "two masses hung over a pulley with rotational inertia"
+   ],
+   "fails_when": [
+    "the string slips",
+    "axle friction"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/atwood_massive_pulley.json",
+   "category": "theorem"
+  },
+  {
+   "key": "torque_free_precession",
+   "family": "rigid_body",
+   "name": "Body-frame precession rate of a torque-free symmetric body",
+   "equation": "Wp = w3*(I3 - I1)/I1",
+   "symbols": {
+    "Wp": {
+     "kind": "angular_frequency",
+     "role": "precession",
+     "sign": "positive",
+     "desc": "precession rate seen in the body frame"
+    },
+    "w3": {
+     "kind": "angular_frequency",
+     "role": "spin",
+     "sign": "positive",
+     "desc": "spin angular velocity about the symmetry axis"
+    },
+    "I1": {
+     "kind": "moment_of_inertia",
+     "role": "transverse",
+     "sign": "positive",
+     "desc": "moment of inertia about a transverse axis"
+    },
+    "I3": {
+     "kind": "moment_of_inertia",
+     "role": "axial",
+     "sign": "positive",
+     "desc": "moment of inertia about the symmetry axis"
+    }
+   },
+   "assumptions": [
+    "a rigid symmetric body (I1 = I2)",
+    "no external torque",
+    "an oblate body (I3 > I1)"
+   ],
+   "requires": [
+    "torque_free"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "a symmetric rigid body spinning freely"
+   ],
+   "fails_when": [
+    "external torques",
+    "an asymmetric body"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/torque_free_precession.json",
+   "category": "theorem"
+  },
+  {
+   "key": "foucault_precession_period",
+   "family": "rotating_frames",
+   "name": "Precession period of a Foucault pendulum",
+   "equation": "T = 2*pi/(W*sin(phi))",
+   "symbols": {
+    "T": {
+     "kind": "time",
+     "role": "precession_period",
+     "sign": "positive",
+     "desc": "time for the swing plane to turn once"
+    },
+    "W": {
+     "kind": "angular_frequency",
+     "role": "rotation",
+     "sign": "positive",
+     "default": {
+      "value": 7.2921159e-05,
+      "unit": "rad/s",
+      "assumption": "Earth's rotation rate 7.292e-5 rad/s",
+      "unless": [
+       "non_earth"
+      ]
+     }
+    },
+    "phi": {
+     "kind": "angle",
+     "role": "latitude",
+     "sign": "positive",
+     "desc": "latitude"
+    }
+   },
+   "assumptions": [
+    "small oscillations",
+    "the rotation much slower than the swing"
+   ],
+   "requires": [
+    "foucault"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "a long pendulum on a rotating planet"
+   ],
+   "fails_when": [
+    "at the equator (no precession)"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/foucault_precession_period.json",
+   "category": "theorem"
+  },
+  {
+   "key": "bead_hoop_equilibrium",
+   "family": "rotating_frames",
+   "name": "Off-axis equilibrium of a bead on a rotating hoop",
+   "equation": "theta = acos(g/(w**2*R))",
+   "symbols": {
+    "theta": {
+     "kind": "angle",
+     "role": "equilibrium",
+     "sign": "positive",
+     "desc": "equilibrium angle from the bottom"
+    },
+    "g": {
+     "kind": "acceleration",
+     "role": "gravity",
+     "sign": "positive",
+     "default": {
+      "value": 9.80665,
+      "unit": "m/s^2",
+      "assumption": "standard gravity g = 9.80665 m/s^2 near Earth's surface",
+      "unless": [
+       "non_earth"
+      ]
+     }
+    },
+    "w": {
+     "kind": "angular_frequency",
+     "role": "rotation",
+     "sign": "positive",
+     "desc": "angular velocity of the hoop"
+    },
+    "R": {
+     "kind": "length",
+     "role": "radius",
+     "sign": "positive",
+     "desc": "radius of the hoop"
+    }
+   },
+   "assumptions": [
+    "a frictionless bead",
+    "the hoop turning about its vertical diameter",
+    "w^2 R > g"
+   ],
+   "requires": [
+    "hoop"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "a bead free to slide on a vertical hoop spinning about a vertical diameter"
+   ],
+   "fails_when": [
+    "w^2 R <= g (the bead stays at the bottom)"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/bead_hoop_equilibrium.json",
+   "category": "theorem"
+  },
+  {
+   "key": "elastic_collision_first_final",
+   "family": "collisions",
+   "name": "Final velocity of the first body in a one-dimensional elastic collision",
+   "equation": "v1f = ((m1 - m2)*v1 + 2*m2*v2)/(m1 + m2)",
+   "symbols": {
+    "v1f": {
+     "kind": "speed",
+     "role": "first_final",
+     "sign": "any",
+     "desc": "final velocity of the first body"
+    },
+    "m1": {
+     "kind": "mass",
+     "role": "first",
+     "sign": "positive",
+     "desc": "mass of the first body"
+    },
+    "m2": {
+     "kind": "mass",
+     "role": "second",
+     "sign": "positive",
+     "desc": "mass of the second body"
+    },
+    "v1": {
+     "kind": "speed",
+     "role": "first_initial",
+     "sign": "any",
+     "desc": "initial velocity of the first body"
+    },
+    "v2": {
+     "kind": "speed",
+     "role": "second_initial",
+     "sign": "any",
+     "desc": "initial velocity of the second body"
+    }
+   },
+   "assumptions": [
+    "a head-on (one-dimensional) collision",
+    "kinetic energy conserved",
+    "no external forces"
+   ],
+   "requires": [
+    "elastic_collision"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "two bodies colliding elastically along a line"
+   ],
+   "fails_when": [
+    "inelastic collisions",
+    "glancing collisions"
+   ],
+   "conventions": [
+    "velocities are signed along the line of motion"
+   ],
+   "certificate": "release/promotion_families/elastic_collision_first_final.json",
+   "category": "theorem"
+  },
+  {
+   "key": "elastic_collision_second_final",
+   "family": "collisions",
+   "name": "Final velocity of the second body in a one-dimensional elastic collision",
+   "equation": "v2f = ((m2 - m1)*v2 + 2*m1*v1)/(m1 + m2)",
+   "symbols": {
+    "v2f": {
+     "kind": "speed",
+     "role": "second_final",
+     "sign": "any",
+     "desc": "final velocity of the second body"
+    },
+    "m1": {
+     "kind": "mass",
+     "role": "first",
+     "sign": "positive",
+     "desc": "mass of the first body"
+    },
+    "m2": {
+     "kind": "mass",
+     "role": "second",
+     "sign": "positive",
+     "desc": "mass of the second body"
+    },
+    "v1": {
+     "kind": "speed",
+     "role": "first_initial",
+     "sign": "any",
+     "desc": "initial velocity of the first body"
+    },
+    "v2": {
+     "kind": "speed",
+     "role": "second_initial",
+     "sign": "any",
+     "desc": "initial velocity of the second body"
+    }
+   },
+   "assumptions": [
+    "a head-on (one-dimensional) collision",
+    "kinetic energy conserved",
+    "no external forces"
+   ],
+   "requires": [
+    "elastic_collision"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "two bodies colliding elastically along a line"
+   ],
+   "fails_when": [
+    "inelastic collisions",
+    "glancing collisions"
+   ],
+   "conventions": [
+    "velocities are signed along the line of motion"
+   ],
+   "certificate": "release/promotion_families/elastic_collision_second_final.json",
+   "category": "theorem"
+  },
+  {
+   "key": "rocket_delta_v",
+   "family": "variable_mass",
+   "name": "Velocity change of a rocket (Tsiolkovsky)",
+   "equation": "dv = ve*log(m0/mf)",
+   "symbols": {
+    "dv": {
+     "kind": "speed",
+     "role": "delta_v",
+     "sign": "positive",
+     "desc": "change in velocity"
+    },
+    "ve": {
+     "kind": "speed",
+     "role": "exhaust",
+     "sign": "positive",
+     "desc": "exhaust velocity"
+    },
+    "m0": {
+     "kind": "mass",
+     "role": "initial",
+     "sign": "positive",
+     "desc": "initial mass"
+    },
+    "mf": {
+     "kind": "mass",
+     "role": "final",
+     "sign": "positive",
+     "desc": "final mass"
+    }
+   },
+   "assumptions": [
+    "no gravity or drag during the burn",
+    "a constant exhaust velocity"
+   ],
+   "requires": [
+    "rocket"
+   ],
+   "excludes": [],
+   "frame": "an inertial frame unless stated",
+   "applies_when": [
+    "a rocket burning fuel in free space"
+   ],
+   "fails_when": [
+    "gravity losses",
+    "atmospheric drag"
+   ],
+   "conventions": [
+    "magnitudes unless a sign is stated"
+   ],
+   "certificate": "release/promotion_families/rocket_delta_v.json",
+   "category": "theorem"
+  }
+ ]
+}

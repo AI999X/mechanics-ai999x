@@ -1,0 +1,302 @@
+{
+ "damped_angular_frequency": [
+  {
+   "q": "A 2 kg mass on a spring with a spring constant of 50 N/m has a damping coefficient of 4 kg/s. What is the damped angular frequency?",
+   "value": 4.898979485566356,
+   "unit": "rad/s"
+  },
+  {
+   "q": "A damped oscillator has mass 1 kg, spring constant 10 N/m and damping coefficient 2 kg/s. Find its damped angular frequency.",
+   "value": 3.0,
+   "unit": "rad/s"
+  }
+ ],
+ "damping_ratio": [
+  {
+   "q": "A damped oscillator has a 2 kg mass, a spring constant of 50 N/m and a damping coefficient of 4 kg/s. What is the damping ratio?",
+   "value": 0.2,
+   "unit": "1"
+  },
+  {
+   "q": "Find the damping ratio of a damped spring system with mass 1 kg, spring constant 10 N/m and damping coefficient 2 kg/s.",
+   "value": 0.31622776601683794,
+   "unit": "1"
+  }
+ ],
+ "quality_factor": [
+  {
+   "q": "What is the quality factor of a damped oscillator with mass 2 kg, spring constant 50 N/m and damping coefficient 4 kg/s?",
+   "value": 2.5,
+   "unit": "1"
+  },
+  {
+   "q": "A damped oscillator has a 1 kg mass, a spring constant of 100 N/m and a damping coefficient of 0.5 kg/s. Find its quality factor.",
+   "value": 20.0,
+   "unit": "1"
+  }
+ ],
+ "driven_amplitude": [
+  {
+   "q": "A 2 kg mass on a spring with spring constant 50 N/m and damping coefficient 4 kg/s is driven by a periodic force of amplitude 10 N at a driving frequency of 3 rad/s. What is the steady-state amplitude?",
+   "value": 0.2926028679903264,
+   "unit": "m"
+  },
+  {
+   "q": "A driven oscillator of mass 1 kg has spring constant 20 N/m and damping coefficient 1 kg/s. The driving force amplitude is 2 N and the driving frequency is 4 rad/s. Find the steady-state amplitude.",
+   "value": 0.35355339059327373,
+   "unit": "m"
+  }
+ ],
+ "amplitude_resonance_frequency": [
+  {
+   "q": "A driven oscillator has mass 2 kg, spring constant 50 N/m and damping coefficient 4 kg/s. What is its amplitude resonance frequency?",
+   "value": 4.795831523312719,
+   "unit": "rad/s"
+  },
+  {
+   "q": "Find the amplitude resonance frequency of a driven damped oscillator with mass 1 kg, spring constant 10 N/m and damping coefficient 2 kg/s.",
+   "value": 2.8284271247461903,
+   "unit": "rad/s"
+  }
+ ],
+ "coupled_fast_mode": [
+  {
+   "q": "Two identical masses of 2 kg are each attached to a wall by a spring of spring constant 40 N/m and joined by a coupling spring of 10 N/m. What is the higher normal mode frequency?",
+   "value": 5.477225575051661,
+   "unit": "rad/s"
+  },
+  {
+   "q": "Two coupled oscillators have masses of 1 kg each, outer spring constant 8 N/m and coupling spring constant 4 N/m. Find the higher normal-mode frequency.",
+   "value": 4.0,
+   "unit": "rad/s"
+  }
+ ],
+ "physical_pendulum_period": [
+  {
+   "q": "A physical pendulum of mass 2 kg has a moment of inertia of 0.5 kg*m^2 about its pivot, and the distance from the pivot to the center of mass is 0.3 m. What is its period?",
+   "value": 1.8315927152316673,
+   "unit": "s"
+  },
+  {
+   "q": "Find the period of a compound pendulum of mass 3 kg with moment of inertia 1.2 kg*m^2 and a distance from the pivot to the center of mass of 0.25 m.",
+   "value": 2.5379293132434255,
+   "unit": "s"
+  }
+ ],
+ "double_pendulum_slow_mode": [
+  {
+   "q": "A double pendulum has equal masses and a length of each arm of 1 m. What is the lower normal mode frequency?",
+   "value": 2.3967900551683465,
+   "unit": "rad/s"
+  },
+  {
+   "q": "Find the lower normal-mode frequency of a double pendulum whose arm length is 0.5 m.",
+   "value": 3.3895730021800343,
+   "unit": "rad/s"
+  }
+ ],
+ "double_pendulum_fast_mode": [
+  {
+   "q": "A double pendulum has equal masses and a length of each arm of 1 m. What is the higher normal mode frequency?",
+   "value": 5.786363057348382,
+   "unit": "rad/s"
+  },
+  {
+   "q": "Find the higher normal-mode frequency of a double pendulum whose arm length is 0.5 m.",
+   "value": 8.18315311251673,
+   "unit": "rad/s"
+  }
+ ],
+ "vis_viva": [
+  {
+   "q": "A satellite on an elliptical orbit around a planet of mass 5.972e24 kg has a semi-major axis of 8.0e6 m. What is its orbital speed at a distance from the center of 7.0e6 m?",
+   "value": 8003.685271708991,
+   "unit": "m/s"
+  },
+  {
+   "q": "A comet orbits a star of mass 1.989e30 kg with a semi-major axis of 2.0e11 m. Find its orbital speed at a distance from the center of 1.5e11 m.",
+   "value": 33260.56561455322,
+   "unit": "m/s"
+  }
+ ],
+ "escape_speed": [
+  {
+   "q": "What is the escape speed from a planet of mass 5.972e24 kg and radius 6.371e6 m?",
+   "value": 11185.97789184991,
+   "unit": "m/s"
+  },
+  {
+   "q": "Find the escape velocity at the surface of a moon with a mass of 7.342e22 kg and a radius of 1.737e6 m.",
+   "value": 2375.3364904192686,
+   "unit": "m/s"
+  }
+ ],
+ "kepler_period_semi_major": [
+  {
+   "q": "A planet orbits a star of mass 1.989e30 kg on an elliptical orbit with a semi-major axis of 1.496e11 m. What is its orbital period?",
+   "value": 31554187.747615103,
+   "unit": "s"
+  },
+  {
+   "q": "Find the orbital period of a satellite on an elliptical orbit around a planet of mass 5.972e24 kg with a semi-major axis of 4.2164e7 m.",
+   "value": 86164.78605197273,
+   "unit": "s"
+  }
+ ],
+ "inertia_solid_sphere": [
+  {
+   "q": "A uniform solid sphere has a mass of 2 kg and a radius of 0.5 m. What is its moment of inertia about its center?",
+   "value": 0.2,
+   "unit": "kg*m^2"
+  },
+  {
+   "q": "Find the moment of inertia of a solid sphere of mass 5 kg and radius 0.2 m about its central axis.",
+   "value": 0.08000000000000002,
+   "unit": "kg*m^2"
+  }
+ ],
+ "inertia_hollow_sphere": [
+  {
+   "q": "A uniform hollow sphere has a mass of 2 kg and a radius of 0.5 m. What is its moment of inertia about its center?",
+   "value": 0.3333333333333333,
+   "unit": "kg*m^2"
+  },
+  {
+   "q": "Find the moment of inertia of a hollow sphere of mass 5 kg and radius 0.2 m about its central axis.",
+   "value": 0.13333333333333333,
+   "unit": "kg*m^2"
+  }
+ ],
+ "inertia_solid_disk": [
+  {
+   "q": "A uniform solid disk has a mass of 2 kg and a radius of 0.5 m. What is its moment of inertia about its center?",
+   "value": 0.25,
+   "unit": "kg*m^2"
+  },
+  {
+   "q": "Find the moment of inertia of a solid disk of mass 5 kg and radius 0.2 m about its central axis.",
+   "value": 0.1,
+   "unit": "kg*m^2"
+  }
+ ],
+ "inertia_rod_center": [
+  {
+   "q": "A uniform rod of mass 3 kg and length 2 m rotates about its center. What is its moment of inertia?",
+   "value": 1.0,
+   "unit": "kg*m^2"
+  },
+  {
+   "q": "Find the moment of inertia of a thin rod of mass 0.6 kg and length 1 m about its center.",
+   "value": 0.049999999999999996,
+   "unit": "kg*m^2"
+  }
+ ],
+ "inertia_rod_end": [
+  {
+   "q": "A uniform rod of mass 3 kg and length 2 m rotates about one end. What is its moment of inertia?",
+   "value": 4.0,
+   "unit": "kg*m^2"
+  },
+  {
+   "q": "Find the moment of inertia of a thin rod of mass 0.6 kg and length 1 m about one end.",
+   "value": 0.19999999999999998,
+   "unit": "kg*m^2"
+  }
+ ],
+ "rolling_incline_acceleration": [
+  {
+   "q": "A cylinder of mass 2 kg and radius 0.2 m with a moment of inertia of 0.04 kg*m^2 rolls without slipping down an incline. The angle of the incline is 30 degrees. What is its acceleration?",
+   "value": 3.268883333333333,
+   "unit": "m/s^2"
+  },
+  {
+   "q": "A wheel rolls without slipping down a slope inclined at 20 degrees. It has mass 4 kg, radius 0.5 m and moment of inertia 0.5 kg*m^2. Find its acceleration.",
+   "value": 2.236047892363113,
+   "unit": "m/s^2"
+  }
+ ],
+ "atwood_massive_pulley": [
+  {
+   "q": "In an Atwood machine the heavier mass is 3 kg and the lighter mass is 2 kg. They hang over a pulley with a moment of inertia of 0.02 kg*m^2 and a radius of 0.1 m. What is the acceleration of the masses?",
+   "value": 1.40095,
+   "unit": "m/s^2"
+  },
+  {
+   "q": "Find the acceleration of an Atwood machine whose heavier mass is 5 kg and lighter mass is 1 kg, hung over a pulley of radius 0.5 m with a moment of inertia of 0.5 kg*m^2.",
+   "value": 4.903325,
+   "unit": "m/s^2"
+  }
+ ],
+ "torque_free_precession": [
+  {
+   "q": "A torque-free symmetric body spins with a spin angular velocity of 10 rad/s. Its transverse moment of inertia is 2 kg*m^2 and its moment of inertia about the symmetry axis is 3 kg*m^2. What is the precession rate?",
+   "value": 5.0,
+   "unit": "rad/s"
+  },
+  {
+   "q": "In deep space a symmetric rigid body has a spin rate of 4 rad/s, a transverse moment of inertia of 1 kg*m^2 and an axial moment of inertia of 1.5 kg*m^2. Find its precession rate.",
+   "value": 2.0,
+   "unit": "rad/s"
+  }
+ ],
+ "foucault_precession_period": [
+  {
+   "q": "A Foucault pendulum swings in Paris at a latitude of 48.85 degrees. What is its precession period?",
+   "value": 114429.34752164049,
+   "unit": "s"
+  },
+  {
+   "q": "Find the precession period of a Foucault pendulum at the North Pole, latitude 90 degrees.",
+   "value": 86164.09000273276,
+   "unit": "s"
+  }
+ ],
+ "bead_hoop_equilibrium": [
+  {
+   "q": "A bead slides without friction on a rotating hoop of radius 0.2 m. The hoop rotates at 10 rad/s about its vertical diameter. What is the equilibrium angle of the bead?",
+   "value": 1.0583251042005695,
+   "unit": "rad"
+  },
+  {
+   "q": "A bead on a hoop of radius 1 m rotating at 5 rad/s about a vertical diameter: find the equilibrium angle.",
+   "value": 1.167702583966659,
+   "unit": "rad"
+  }
+ ],
+ "elastic_collision_first_final": [
+  {
+   "q": "In an elastic collision the first mass is 2 kg with a velocity of the first of 3 m/s, and the second mass is 1 kg with a velocity of the second of 0 m/s. What is the final velocity of the first?",
+   "value": 1.0,
+   "unit": "m/s"
+  },
+  {
+   "q": "Two carts collide elastically: the first mass is 1 kg and the velocity of the first is 4 m/s; the second mass is 3 kg and the velocity of the second is -2 m/s. Find the final velocity of the first.",
+   "value": -5.0,
+   "unit": "m/s"
+  }
+ ],
+ "elastic_collision_second_final": [
+  {
+   "q": "In an elastic collision the first mass is 2 kg with a velocity of the first of 3 m/s, and the second mass is 1 kg with a velocity of the second of 0 m/s. What is the final velocity of the second?",
+   "value": 4.0,
+   "unit": "m/s"
+  },
+  {
+   "q": "Two carts collide elastically: the first mass is 1 kg and the velocity of the first is 4 m/s; the second mass is 3 kg and the velocity of the second is -2 m/s. Find the final velocity of the second.",
+   "value": 1.0,
+   "unit": "m/s"
+  }
+ ],
+ "rocket_delta_v": [
+  {
+   "q": "A rocket with an exhaust velocity of 3000 m/s has an initial mass of 1000 kg and a final mass of 400 kg after the burn. What is its change in velocity?",
+   "value": 2748.8721956224654,
+   "unit": "m/s"
+  },
+  {
+   "q": "Find the delta-v of a rocket whose exhaust speed is 4400 m/s, with an initial mass of 50000 kg and a final mass of 10000 kg.",
+   "value": 7081.526814710041,
+   "unit": "m/s"
+  }
+ ]
+}

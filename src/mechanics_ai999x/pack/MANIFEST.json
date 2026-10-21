@@ -1,0 +1,37 @@
+{
+ "package": "1.0.0",
+ "pack": "0.1.0",
+ "knowledge_db": null,
+ "files": {
+  "dictionary/kinds.json": "b90724ee53e26121e44ffbcbff41075c48158da9c7fb6462425a4cde1f2476b0",
+  "dictionary/terms.json": "f4664d582f2b506ce5eb2a4f718ecd98758704bdb68ca284d40e2293a0096375",
+  "knowledge/relations.json": "4200afb1e2874f0bf9d060b5d57d07b7ea2fba5c6dc11c01811a2bdba036df77",
+  "knowledge/reference_cases.json": "7a5b4e4e49e3edd1e0d66b5e7641853dcb2cd3d718d019e89e5373742d32038e",
+  "knowledge/question_examples.json": "9df07871a6882ec63db8b046cc7149630b23eec4cd8c042a80f757d3f5411042",
+  "mechanics_knowledge_public.sqlite": "3f17b8bbc90a7fe4a00de333e7cb78ec8580286eb6df4bdfc8778dd5f7c7f601"
+ },
+ "engine": [
+  "__init__.py",
+  "answer.py",
+  "compiler.py",
+  "decision_reader.py",
+  "derivations.py",
+  "engine.py",
+  "expr.py",
+  "identity.py",
+  "knowledge_store.py",
+  "pack.py",
+  "planner.py",
+  "policy.py",
+  "precision.py",
+  "procedure_spec.py",
+  "product.py",
+  "quantity.py",
+  "relation.py",
+  "retrieval.py",
+  "student_gate.py",
+  "systems/__init__.py",
+  "systems/reader.py",
+  "systems/solver.py"
+ ]
+}
