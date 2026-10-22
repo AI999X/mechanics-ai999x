@@ -63,7 +63,7 @@ Command line: `mechanics-ai999x "<question>"`, `mechanics-ai999x --capabilities`
 
 ## Find the right capability, and draw it
 
-`mechanics.search()` finds which certified capability a question is about — across **every** AI999X model, so a question for another model points you to it. It runs the AI999X capability encoder (a 4.9 MB ONNX model, offline): `pip install "mechanics-ai999x[search]"`. `ask(question, suggest=True)` adds the same pointers to a question it does not answer; an answer itself never changes.
+`mechanics.search()` finds which certified capability a question is about — across **every** AI999X model, so a question for another model points you to it. It runs **[ai999x-encoder](https://huggingface.co/AI999X/ai999x-encoder)**, AI999X's own capability encoder (4.7M parameters, a 4.9 MB ONNX model, offline; the root `model.safetensors` of this repository): `pip install "mechanics-ai999x[search]"`. `ask(question, suggest=True)` adds the same pointers to a question it does not answer; an answer itself never changes.
 
 ```python
 import mechanics_ai999x as mechanics

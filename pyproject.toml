@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "mechanics-ai999x"
 version = "2.0.0"
-description = "Offline classical-mechanics solver: damped, driven and coupled oscillations, pendulums, orbits, moments of inertia, rolling, Atwood machines, precession, rotating frames, collisions and rockets, with steps, LaTeX and honest refusals"
+description = "Offline classical-mechanics solver: damped, driven and coupled oscillations, pendulums, orbits, moments of inertia, rolling, Atwood machines, precession, rotating frames, collisions and rockets, with steps, LaTeX and honest refusals; finds the right capability across every AI999X model and draws figures"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "Apache-2.0"}
