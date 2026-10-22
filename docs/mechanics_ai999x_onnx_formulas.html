@@ -1,0 +1,628 @@
+<!doctype html><html><head><meta charset="utf-8"><title>mechanics-ai999x ONNX formula pack guide</title>
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+<style>
+@page{size:A4;margin:16mm 15mm}
+body{font-family:"Segoe UI",Arial,sans-serif;font-size:10.5pt;line-height:1.45;color:#1b1f24;max-width:880px;margin:auto}
+h1{font-size:22pt;border-bottom:2px solid #2b5c8a;padding-bottom:4px;margin-top:28px;page-break-before:always}
+h1:first-of-type{page-break-before:avoid}
+h2{font-size:15pt;color:#2b5c8a;margin-top:22px;page-break-after:avoid}
+h3{font-size:12pt;margin-top:16px;page-break-after:avoid}
+pre{background:#f4f6f8;border:1px solid #dde3e8;border-radius:4px;padding:8px 10px;font-size:8.8pt;white-space:pre-wrap;page-break-inside:avoid}
+code{font-family:Consolas,monospace;font-size:9pt;background:#f4f6f8;padding:0 2px}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:8px 0;font-size:9pt;width:100%;page-break-inside:auto}
+th,td{border:1px solid #cfd6dd;padding:3px 6px;vertical-align:top;text-align:left}
+th{background:#eaf0f5}
+.math{margin:6px 0;overflow-x:auto}
+.badge{display:inline-block;color:#fff;border-radius:3px;padding:0 5px;font-size:8.5pt;white-space:nowrap}
+figure{margin:10px 0;text-align:center;page-break-inside:avoid}figure img{max-width:88%}
+figcaption{font-size:9pt;color:#555}
+.pb{page-break-after:always}
+</style></head><body>
+<h1>mechanics-ai999x: ONNX formula pack guide</h1>
+<p>Version 1.0.1. 102 exact formula graphs — every certified closed-form capability of mechanics-ai999x, compiled from its exact formula (nothing learned, nothing approximate). Float64, standard ONNX operators; run them with onnxruntime in Python, C++, C#, Java or the browser. Creator / engineer: Ibnul Jaif Farabi · AI999X · Apache-2.0.</p>
+<h2>Find the right formula (autocomplete)</h2>
+<p>Never guess a formula: search the catalog. <code>catalog.json</code> lists every graph with its name, keywords, inputs (meaning and SI unit), output unit and LaTeX. In JavaScript, <code>formula-pack.js</code> does the search and runs the graph; <code>formula-pack.d.ts</code> gives your editor every id and input name.</p>
+<pre><code class="javascript">import { loadPack } from &quot;./formula-pack.js&quot;;
+const pack = await loadPack(&quot;https://huggingface.co/AI999X/mechanics-ai999x/resolve/main/onnx/formulas&quot;);
+pack.search(&quot;amplitude-reso&quot;);      // autocomplete: best matches first
+const r = await pack.solve(&quot;amplitude_resonance_frequency.b&quot;, { wr: 2.0, k: 2.0, m: 2.0 });
+console.log(r.value, r.unit);</code></pre>
+<h2>Python and C#</h2>
+<pre><code class="python">import json, numpy as np, onnxruntime as ort
+cat = json.load(open(&#x27;onnx/formulas/catalog.json&#x27;))
+e = next(x for x in cat[&#x27;entries&#x27;] if x[&#x27;id&#x27;] == &#x27;amplitude_resonance_frequency.b&#x27;)
+s = ort.InferenceSession(&#x27;onnx/formulas/&#x27; + e[&#x27;file&#x27;])
+print(s.run(None, {n: np.array(2.0) for n in e[&#x27;inputs&#x27;]}))</code></pre>
+<pre><code class="csharp">using Microsoft.ML.OnnxRuntime; using Microsoft.ML.OnnxRuntime.Tensors;
+using var s = new InferenceSession(&quot;onnx/formulas/amplitude_resonance_frequency__b.onnx&quot;);
+var inputs = new[] { NamedOnnxValue.CreateFromTensor(&quot;wr&quot;, new DenseTensor&lt;double&gt;(new[] { 2.0 }, new int[0])), NamedOnnxValue.CreateFromTensor(&quot;k&quot;, new DenseTensor&lt;double&gt;(new[] { 2.0 }, new int[0])), NamedOnnxValue.CreateFromTensor(&quot;m&quot;, new DenseTensor&lt;double&gt;(new[] { 2.0 }, new int[0])) };
+using var r = s.Run(inputs);</code></pre>
+<h2>Rules</h2>
+<ul><li>Inputs are numbers in <strong>SI units</strong> (convert first: 72 km/h = 20 m/s).</li><li>A formula with several solutions returns one output per branch; take the branch whose sign the quantity allows (the entry&#x27;s <code>sign</code>; formula-pack.js does it). Two valid branches means the question is ambiguous.</li><li>A formula applies only under its stated conditions (<code>conditions</code>): a pendulum formula is for a pendulum.</li><li>Questions in words: use the Python package (<code>pip install mechanics-ai999x</code>), which reads them and refuses what it cannot verify.</li></ul>
+<h2>Catalogue</h2>
+<h3 id="amplitude_resonance_frequency-b">Amplitude-resonance frequency of a driven damped oscillator — solve for viscous damping coefficient — <code>amplitude_resonance_frequency.b</code></h3>
+<div class="math">\[\omega_{r} = \sqrt{\frac{k}{m} - \frac{b^{2}}{2 m^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>wr</code></td><td>driving frequency of maximum amplitude</td><td><code>rad/s</code></td></tr><tr><td><code>k</code></td><td>spring constant</td><td><code>N/m</code></td></tr><tr><td><code>m</code></td><td>oscillating mass</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg/s</code></li><li><strong>File:</strong> <code>amplitude_resonance_frequency__b.onnx</code></li><li><strong>Applies when:</strong> driven</li></ul>
+<pre><code class="text">inputs {&#x27;wr&#x27;: 0.5, &#x27;k&#x27;: 0.6, &#x27;m&#x27;: 0.7}
+-&gt; 0.771362 kg/s   (ran on amplitude_resonance_frequency__b.onnx; matches the Python engine)</code></pre>
+<h3 id="amplitude_resonance_frequency-k">Amplitude-resonance frequency of a driven damped oscillator — solve for spring constant — <code>amplitude_resonance_frequency.k</code></h3>
+<div class="math">\[\omega_{r} = \sqrt{\frac{k}{m} - \frac{b^{2}}{2 m^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>wr</code></td><td>driving frequency of maximum amplitude</td><td><code>rad/s</code></td></tr><tr><td><code>m</code></td><td>oscillating mass</td><td><code>kg</code></td></tr><tr><td><code>b</code></td><td>viscous damping coefficient</td><td><code>kg/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>N/m</code></li><li><strong>File:</strong> <code>amplitude_resonance_frequency__k.onnx</code></li><li><strong>Applies when:</strong> driven</li></ul>
+<pre><code class="text">inputs {&#x27;wr&#x27;: 2.0, &#x27;m&#x27;: 2.1, &#x27;b&#x27;: 2.2}
+-&gt; 9.55238 N/m   (ran on amplitude_resonance_frequency__k.onnx; matches the Python engine)</code></pre>
+<h3 id="amplitude_resonance_frequency-m">Amplitude-resonance frequency of a driven damped oscillator — solve for oscillating mass — <code>amplitude_resonance_frequency.m</code></h3>
+<div class="math">\[\omega_{r} = \sqrt{\frac{k}{m} - \frac{b^{2}}{2 m^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>wr</code></td><td>driving frequency of maximum amplitude</td><td><code>rad/s</code></td></tr><tr><td><code>k</code></td><td>spring constant</td><td><code>N/m</code></td></tr><tr><td><code>b</code></td><td>viscous damping coefficient</td><td><code>kg/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>amplitude_resonance_frequency__m.onnx</code></li><li><strong>Branches:</strong> 2 — take the one that is positive</li><li><strong>Applies when:</strong> driven</li></ul>
+<h3 id="amplitude_resonance_frequency-wr">Amplitude-resonance frequency of a driven damped oscillator — solve for driving frequency of maximum amplitude — <code>amplitude_resonance_frequency.wr</code></h3>
+<div class="math">\[\omega_{r} = \sqrt{\frac{k}{m} - \frac{b^{2}}{2 m^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>k</code></td><td>spring constant</td><td><code>N/m</code></td></tr><tr><td><code>m</code></td><td>oscillating mass</td><td><code>kg</code></td></tr><tr><td><code>b</code></td><td>viscous damping coefficient</td><td><code>kg/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>rad/s</code></li><li><strong>File:</strong> <code>amplitude_resonance_frequency__wr.onnx</code></li><li><strong>Applies when:</strong> driven</li></ul>
+<pre><code class="text">inputs {&#x27;k&#x27;: 2.0, &#x27;m&#x27;: 2.1, &#x27;b&#x27;: 2.2}
+-&gt; 0.635317 rad/s   (ran on amplitude_resonance_frequency__wr.onnx; matches the Python engine)</code></pre>
+<h3 id="atwood_massive_pulley-Ir">Acceleration of an Atwood machine with a massive pulley — solve for moment of inertia of the pulley — <code>atwood_massive_pulley.Ir</code></h3>
+<div class="math">\[a = \frac{\left(m_{1} - m_{2}\right) g}{m_{1} + m_{2} + \frac{I_{r}}{R^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>a</code></td><td>acceleration of each mass</td><td><code>m/s^2</code></td></tr><tr><td><code>m1</code></td><td>heavier mass</td><td><code>kg</code></td></tr><tr><td><code>m2</code></td><td>lighter mass</td><td><code>kg</code></td></tr><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr><tr><td><code>R</code></td><td>radius of the pulley</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg*m^2</code></li><li><strong>File:</strong> <code>atwood_massive_pulley__Ir.onnx</code></li><li><strong>Applies when:</strong> atwood</li></ul>
+<h3 id="atwood_massive_pulley-R">Acceleration of an Atwood machine with a massive pulley — solve for radius of the pulley — <code>atwood_massive_pulley.R</code></h3>
+<div class="math">\[a = \frac{\left(m_{1} - m_{2}\right) g}{m_{1} + m_{2} + \frac{I_{r}}{R^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>a</code></td><td>acceleration of each mass</td><td><code>m/s^2</code></td></tr><tr><td><code>m1</code></td><td>heavier mass</td><td><code>kg</code></td></tr><tr><td><code>m2</code></td><td>lighter mass</td><td><code>kg</code></td></tr><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr><tr><td><code>Ir</code></td><td>moment of inertia of the pulley</td><td><code>kg*m^2</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m</code></li><li><strong>File:</strong> <code>atwood_massive_pulley__R.onnx</code></li><li><strong>Branches:</strong> 2 — take the one that is positive</li><li><strong>Applies when:</strong> atwood</li></ul>
+<h3 id="atwood_massive_pulley-a">Acceleration of an Atwood machine with a massive pulley — solve for acceleration of each mass — <code>atwood_massive_pulley.a</code></h3>
+<div class="math">\[a = \frac{\left(m_{1} - m_{2}\right) g}{m_{1} + m_{2} + \frac{I_{r}}{R^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>m1</code></td><td>heavier mass</td><td><code>kg</code></td></tr><tr><td><code>m2</code></td><td>lighter mass</td><td><code>kg</code></td></tr><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr><tr><td><code>Ir</code></td><td>moment of inertia of the pulley</td><td><code>kg*m^2</code></td></tr><tr><td><code>R</code></td><td>radius of the pulley</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m/s^2</code></li><li><strong>File:</strong> <code>atwood_massive_pulley__a.onnx</code></li><li><strong>Applies when:</strong> atwood</li></ul>
+<h3 id="atwood_massive_pulley-g">Acceleration of an Atwood machine with a massive pulley — solve for gravity — <code>atwood_massive_pulley.g</code></h3>
+<div class="math">\[a = \frac{\left(m_{1} - m_{2}\right) g}{m_{1} + m_{2} + \frac{I_{r}}{R^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>a</code></td><td>acceleration of each mass</td><td><code>m/s^2</code></td></tr><tr><td><code>m1</code></td><td>heavier mass</td><td><code>kg</code></td></tr><tr><td><code>m2</code></td><td>lighter mass</td><td><code>kg</code></td></tr><tr><td><code>Ir</code></td><td>moment of inertia of the pulley</td><td><code>kg*m^2</code></td></tr><tr><td><code>R</code></td><td>radius of the pulley</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m/s^2</code></li><li><strong>File:</strong> <code>atwood_massive_pulley__g.onnx</code></li><li><strong>Applies when:</strong> atwood</li></ul>
+<h3 id="atwood_massive_pulley-m1">Acceleration of an Atwood machine with a massive pulley — solve for heavier mass — <code>atwood_massive_pulley.m1</code></h3>
+<div class="math">\[a = \frac{\left(m_{1} - m_{2}\right) g}{m_{1} + m_{2} + \frac{I_{r}}{R^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>a</code></td><td>acceleration of each mass</td><td><code>m/s^2</code></td></tr><tr><td><code>m2</code></td><td>lighter mass</td><td><code>kg</code></td></tr><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr><tr><td><code>Ir</code></td><td>moment of inertia of the pulley</td><td><code>kg*m^2</code></td></tr><tr><td><code>R</code></td><td>radius of the pulley</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>atwood_massive_pulley__m1.onnx</code></li><li><strong>Applies when:</strong> atwood</li></ul>
+<pre><code class="text">inputs {&#x27;a&#x27;: 2.0, &#x27;m2&#x27;: 2.1, &#x27;g&#x27;: 2.2, &#x27;Ir&#x27;: 2.3, &#x27;R&#x27;: 2.4}
+-&gt; 48.0931 kg   (ran on atwood_massive_pulley__m1.onnx; matches the Python engine)</code></pre>
+<h3 id="atwood_massive_pulley-m2">Acceleration of an Atwood machine with a massive pulley — solve for lighter mass — <code>atwood_massive_pulley.m2</code></h3>
+<div class="math">\[a = \frac{\left(m_{1} - m_{2}\right) g}{m_{1} + m_{2} + \frac{I_{r}}{R^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>a</code></td><td>acceleration of each mass</td><td><code>m/s^2</code></td></tr><tr><td><code>m1</code></td><td>heavier mass</td><td><code>kg</code></td></tr><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr><tr><td><code>Ir</code></td><td>moment of inertia of the pulley</td><td><code>kg*m^2</code></td></tr><tr><td><code>R</code></td><td>radius of the pulley</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>atwood_massive_pulley__m2.onnx</code></li><li><strong>Applies when:</strong> atwood</li></ul>
+<pre><code class="text">inputs {&#x27;a&#x27;: 5.0, &#x27;m1&#x27;: 5.1, &#x27;g&#x27;: 5.2, &#x27;Ir&#x27;: 5.3, &#x27;R&#x27;: 5.4}
+-&gt; 0.010904 kg   (ran on atwood_massive_pulley__m2.onnx; matches the Python engine)</code></pre>
+<h3 id="bead_hoop_equilibrium-R">Off-axis equilibrium of a bead on a rotating hoop — solve for radius of the hoop — <code>bead_hoop_equilibrium.R</code></h3>
+<div class="math">\[\theta = \arccos\left(\frac{g}{\omega^{2} R}\right)\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>theta</code></td><td>equilibrium angle from the bottom</td><td><code>rad</code></td></tr><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr><tr><td><code>w</code></td><td>angular velocity of the hoop</td><td><code>rad/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m</code></li><li><strong>File:</strong> <code>bead_hoop_equilibrium__R.onnx</code></li><li><strong>Applies when:</strong> hoop</li></ul>
+<pre><code class="text">inputs {&#x27;theta&#x27;: 0.5, &#x27;g&#x27;: 0.6, &#x27;w&#x27;: 0.7}
+-&gt; 1.3953 m   (ran on bead_hoop_equilibrium__R.onnx; matches the Python engine)</code></pre>
+<h3 id="bead_hoop_equilibrium-g">Off-axis equilibrium of a bead on a rotating hoop — solve for gravity — <code>bead_hoop_equilibrium.g</code></h3>
+<div class="math">\[\theta = \arccos\left(\frac{g}{\omega^{2} R}\right)\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>theta</code></td><td>equilibrium angle from the bottom</td><td><code>rad</code></td></tr><tr><td><code>w</code></td><td>angular velocity of the hoop</td><td><code>rad/s</code></td></tr><tr><td><code>R</code></td><td>radius of the hoop</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m/s^2</code></li><li><strong>File:</strong> <code>bead_hoop_equilibrium__g.onnx</code></li><li><strong>Applies when:</strong> hoop</li></ul>
+<pre><code class="text">inputs {&#x27;theta&#x27;: 0.5, &#x27;w&#x27;: 0.6, &#x27;R&#x27;: 0.7}
+-&gt; 0.221151 m/s^2   (ran on bead_hoop_equilibrium__g.onnx; matches the Python engine)</code></pre>
+<h3 id="bead_hoop_equilibrium-theta">Off-axis equilibrium of a bead on a rotating hoop — solve for equilibrium angle from the bottom — <code>bead_hoop_equilibrium.theta</code></h3>
+<div class="math">\[\theta = \arccos\left(\frac{g}{\omega^{2} R}\right)\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr><tr><td><code>w</code></td><td>angular velocity of the hoop</td><td><code>rad/s</code></td></tr><tr><td><code>R</code></td><td>radius of the hoop</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>rad</code></li><li><strong>File:</strong> <code>bead_hoop_equilibrium__theta.onnx</code></li><li><strong>Applies when:</strong> hoop</li></ul>
+<pre><code class="text">inputs {&#x27;g&#x27;: 2.0, &#x27;w&#x27;: 2.1, &#x27;R&#x27;: 2.2}
+-&gt; 1.36316 rad   (ran on bead_hoop_equilibrium__theta.onnx; matches the Python engine)</code></pre>
+<h3 id="bead_hoop_equilibrium-w">Off-axis equilibrium of a bead on a rotating hoop — solve for angular velocity of the hoop — <code>bead_hoop_equilibrium.w</code></h3>
+<div class="math">\[\theta = \arccos\left(\frac{g}{\omega^{2} R}\right)\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>theta</code></td><td>equilibrium angle from the bottom</td><td><code>rad</code></td></tr><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr><tr><td><code>R</code></td><td>radius of the hoop</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>rad/s</code></li><li><strong>File:</strong> <code>bead_hoop_equilibrium__w.onnx</code></li><li><strong>Branches:</strong> 2 — take the one that is positive</li><li><strong>Applies when:</strong> hoop</li></ul>
+<pre><code class="text">inputs {&#x27;theta&#x27;: 0.5, &#x27;g&#x27;: 0.6, &#x27;R&#x27;: 0.7}
+-&gt; -0.988286, 0.988286 rad/s   (ran on bead_hoop_equilibrium__w.onnx; matches the Python engine)</code></pre>
+<h3 id="coupled_fast_mode-k">Higher normal-mode frequency of two coupled oscillators — solve for each outer spring&#x27;s constant — <code>coupled_fast_mode.k</code></h3>
+<div class="math">\[\omega_{2} = \sqrt{\frac{k + 2 k_{c}}{m}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>w2</code></td><td>higher normal-mode angular frequency</td><td><code>rad/s</code></td></tr><tr><td><code>kc</code></td><td>coupling spring constant</td><td><code>N/m</code></td></tr><tr><td><code>m</code></td><td>each mass</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>N/m</code></li><li><strong>File:</strong> <code>coupled_fast_mode__k.onnx</code></li><li><strong>Applies when:</strong> coupled</li></ul>
+<pre><code class="text">inputs {&#x27;w2&#x27;: 2.0, &#x27;kc&#x27;: 2.1, &#x27;m&#x27;: 2.2}
+-&gt; 4.6 N/m   (ran on coupled_fast_mode__k.onnx; matches the Python engine)</code></pre>
+<h3 id="coupled_fast_mode-kc">Higher normal-mode frequency of two coupled oscillators — solve for coupling spring constant — <code>coupled_fast_mode.kc</code></h3>
+<div class="math">\[\omega_{2} = \sqrt{\frac{k + 2 k_{c}}{m}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>w2</code></td><td>higher normal-mode angular frequency</td><td><code>rad/s</code></td></tr><tr><td><code>k</code></td><td>each outer spring&#x27;s constant</td><td><code>N/m</code></td></tr><tr><td><code>m</code></td><td>each mass</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>N/m</code></li><li><strong>File:</strong> <code>coupled_fast_mode__kc.onnx</code></li><li><strong>Applies when:</strong> coupled</li></ul>
+<pre><code class="text">inputs {&#x27;w2&#x27;: 2.0, &#x27;k&#x27;: 2.1, &#x27;m&#x27;: 2.2}
+-&gt; 3.35 N/m   (ran on coupled_fast_mode__kc.onnx; matches the Python engine)</code></pre>
+<h3 id="coupled_fast_mode-m">Higher normal-mode frequency of two coupled oscillators — solve for each mass — <code>coupled_fast_mode.m</code></h3>
+<div class="math">\[\omega_{2} = \sqrt{\frac{k + 2 k_{c}}{m}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>w2</code></td><td>higher normal-mode angular frequency</td><td><code>rad/s</code></td></tr><tr><td><code>k</code></td><td>each outer spring&#x27;s constant</td><td><code>N/m</code></td></tr><tr><td><code>kc</code></td><td>coupling spring constant</td><td><code>N/m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>coupled_fast_mode__m.onnx</code></li><li><strong>Applies when:</strong> coupled</li></ul>
+<pre><code class="text">inputs {&#x27;w2&#x27;: 2.0, &#x27;k&#x27;: 2.1, &#x27;kc&#x27;: 2.2}
+-&gt; 1.625 kg   (ran on coupled_fast_mode__m.onnx; matches the Python engine)</code></pre>
+<h3 id="coupled_fast_mode-w2">Higher normal-mode frequency of two coupled oscillators — solve for higher normal-mode angular frequency — <code>coupled_fast_mode.w2</code></h3>
+<div class="math">\[\omega_{2} = \sqrt{\frac{k + 2 k_{c}}{m}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>k</code></td><td>each outer spring&#x27;s constant</td><td><code>N/m</code></td></tr><tr><td><code>kc</code></td><td>coupling spring constant</td><td><code>N/m</code></td></tr><tr><td><code>m</code></td><td>each mass</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>rad/s</code></li><li><strong>File:</strong> <code>coupled_fast_mode__w2.onnx</code></li><li><strong>Applies when:</strong> coupled</li></ul>
+<pre><code class="text">inputs {&#x27;k&#x27;: 2.0, &#x27;kc&#x27;: 2.1, &#x27;m&#x27;: 2.2}
+-&gt; 1.67874 rad/s   (ran on coupled_fast_mode__w2.onnx; matches the Python engine)</code></pre>
+<h3 id="damped_angular_frequency-b">Angular frequency of a damped oscillator — solve for viscous damping coefficient — <code>damped_angular_frequency.b</code></h3>
+<div class="math">\[\omega_{d} = \sqrt{\frac{k}{m} - \frac{b^{2}}{4 m^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>wd</code></td><td>angular frequency of the damped oscillation</td><td><code>rad/s</code></td></tr><tr><td><code>k</code></td><td>spring constant</td><td><code>N/m</code></td></tr><tr><td><code>m</code></td><td>oscillating mass</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg/s</code></li><li><strong>File:</strong> <code>damped_angular_frequency__b.onnx</code></li><li><strong>Applies when:</strong> damped</li></ul>
+<pre><code class="text">inputs {&#x27;wd&#x27;: 0.5, &#x27;k&#x27;: 0.6, &#x27;m&#x27;: 0.7}
+-&gt; 1.09087 kg/s   (ran on damped_angular_frequency__b.onnx; matches the Python engine)</code></pre>
+<h3 id="damped_angular_frequency-k">Angular frequency of a damped oscillator — solve for spring constant — <code>damped_angular_frequency.k</code></h3>
+<div class="math">\[\omega_{d} = \sqrt{\frac{k}{m} - \frac{b^{2}}{4 m^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>wd</code></td><td>angular frequency of the damped oscillation</td><td><code>rad/s</code></td></tr><tr><td><code>m</code></td><td>oscillating mass</td><td><code>kg</code></td></tr><tr><td><code>b</code></td><td>viscous damping coefficient</td><td><code>kg/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>N/m</code></li><li><strong>File:</strong> <code>damped_angular_frequency__k.onnx</code></li><li><strong>Applies when:</strong> damped</li></ul>
+<pre><code class="text">inputs {&#x27;wd&#x27;: 2.0, &#x27;m&#x27;: 2.1, &#x27;b&#x27;: 2.2}
+-&gt; 8.97619 N/m   (ran on damped_angular_frequency__k.onnx; matches the Python engine)</code></pre>
+<h3 id="damped_angular_frequency-m">Angular frequency of a damped oscillator — solve for oscillating mass — <code>damped_angular_frequency.m</code></h3>
+<div class="math">\[\omega_{d} = \sqrt{\frac{k}{m} - \frac{b^{2}}{4 m^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>wd</code></td><td>angular frequency of the damped oscillation</td><td><code>rad/s</code></td></tr><tr><td><code>k</code></td><td>spring constant</td><td><code>N/m</code></td></tr><tr><td><code>b</code></td><td>viscous damping coefficient</td><td><code>kg/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>damped_angular_frequency__m.onnx</code></li><li><strong>Branches:</strong> 2 — take the one that is positive</li><li><strong>Applies when:</strong> damped</li></ul>
+<h3 id="damped_angular_frequency-wd">Angular frequency of a damped oscillator — solve for angular frequency of the damped oscillation — <code>damped_angular_frequency.wd</code></h3>
+<div class="math">\[\omega_{d} = \sqrt{\frac{k}{m} - \frac{b^{2}}{4 m^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>k</code></td><td>spring constant</td><td><code>N/m</code></td></tr><tr><td><code>m</code></td><td>oscillating mass</td><td><code>kg</code></td></tr><tr><td><code>b</code></td><td>viscous damping coefficient</td><td><code>kg/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>rad/s</code></li><li><strong>File:</strong> <code>damped_angular_frequency__wd.onnx</code></li><li><strong>Applies when:</strong> damped</li></ul>
+<pre><code class="text">inputs {&#x27;k&#x27;: 2.0, &#x27;m&#x27;: 2.1, &#x27;b&#x27;: 2.2}
+-&gt; 0.82341 rad/s   (ran on damped_angular_frequency__wd.onnx; matches the Python engine)</code></pre>
+<h3 id="damping_ratio-b">Damping ratio — solve for viscous damping coefficient — <code>damping_ratio.b</code></h3>
+<div class="math">\[\zeta = \frac{b}{2 \sqrt{k m}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>zeta</code></td><td>damping ratio</td><td><code>1</code></td></tr><tr><td><code>k</code></td><td>spring constant</td><td><code>N/m</code></td></tr><tr><td><code>m</code></td><td>oscillating mass</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg/s</code></li><li><strong>File:</strong> <code>damping_ratio__b.onnx</code></li><li><strong>Applies when:</strong> damped</li></ul>
+<pre><code class="text">inputs {&#x27;zeta&#x27;: 2.0, &#x27;k&#x27;: 2.1, &#x27;m&#x27;: 2.2}
+-&gt; 8.59767 kg/s   (ran on damping_ratio__b.onnx; matches the Python engine)</code></pre>
+<h3 id="damping_ratio-k">Damping ratio — solve for spring constant — <code>damping_ratio.k</code></h3>
+<div class="math">\[\zeta = \frac{b}{2 \sqrt{k m}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>zeta</code></td><td>damping ratio</td><td><code>1</code></td></tr><tr><td><code>b</code></td><td>viscous damping coefficient</td><td><code>kg/s</code></td></tr><tr><td><code>m</code></td><td>oscillating mass</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>N/m</code></li><li><strong>File:</strong> <code>damping_ratio__k.onnx</code></li><li><strong>Applies when:</strong> damped</li></ul>
+<pre><code class="text">inputs {&#x27;zeta&#x27;: 2.0, &#x27;b&#x27;: 2.1, &#x27;m&#x27;: 2.2}
+-&gt; 0.125284 N/m   (ran on damping_ratio__k.onnx; matches the Python engine)</code></pre>
+<h3 id="damping_ratio-m">Damping ratio — solve for oscillating mass — <code>damping_ratio.m</code></h3>
+<div class="math">\[\zeta = \frac{b}{2 \sqrt{k m}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>zeta</code></td><td>damping ratio</td><td><code>1</code></td></tr><tr><td><code>b</code></td><td>viscous damping coefficient</td><td><code>kg/s</code></td></tr><tr><td><code>k</code></td><td>spring constant</td><td><code>N/m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>damping_ratio__m.onnx</code></li><li><strong>Applies when:</strong> damped</li></ul>
+<pre><code class="text">inputs {&#x27;zeta&#x27;: 2.0, &#x27;b&#x27;: 2.1, &#x27;k&#x27;: 2.2}
+-&gt; 0.125284 kg   (ran on damping_ratio__m.onnx; matches the Python engine)</code></pre>
+<h3 id="damping_ratio-zeta">Damping ratio — solve for damping ratio — <code>damping_ratio.zeta</code></h3>
+<div class="math">\[\zeta = \frac{b}{2 \sqrt{k m}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>b</code></td><td>viscous damping coefficient</td><td><code>kg/s</code></td></tr><tr><td><code>k</code></td><td>spring constant</td><td><code>N/m</code></td></tr><tr><td><code>m</code></td><td>oscillating mass</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>1</code></li><li><strong>File:</strong> <code>damping_ratio__zeta.onnx</code></li><li><strong>Applies when:</strong> damped</li></ul>
+<pre><code class="text">inputs {&#x27;b&#x27;: 2.0, &#x27;k&#x27;: 2.1, &#x27;m&#x27;: 2.2}
+-&gt; 0.465242 1   (ran on damping_ratio__zeta.onnx; matches the Python engine)</code></pre>
+<h3 id="double_pendulum_fast_mode-L">Higher normal mode of a double pendulum — solve for length of each arm — <code>double_pendulum_fast_mode.L</code></h3>
+<div class="math">\[\omega = \sqrt{\frac{\left(2 + \sqrt{2}\right) g}{L}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>w</code></td><td>higher normal-mode angular frequency</td><td><code>rad/s</code></td></tr><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m</code></li><li><strong>File:</strong> <code>double_pendulum_fast_mode__L.onnx</code></li><li><strong>Applies when:</strong> double_pendulum</li></ul>
+<pre><code class="text">inputs {&#x27;w&#x27;: 2.0, &#x27;g&#x27;: 2.1}
+-&gt; 1.79246 m   (ran on double_pendulum_fast_mode__L.onnx; matches the Python engine)</code></pre>
+<h3 id="double_pendulum_fast_mode-g">Higher normal mode of a double pendulum — solve for gravity — <code>double_pendulum_fast_mode.g</code></h3>
+<div class="math">\[\omega = \sqrt{\frac{\left(2 + \sqrt{2}\right) g}{L}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>w</code></td><td>higher normal-mode angular frequency</td><td><code>rad/s</code></td></tr><tr><td><code>L</code></td><td>length of each arm</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m/s^2</code></li><li><strong>File:</strong> <code>double_pendulum_fast_mode__g.onnx</code></li><li><strong>Applies when:</strong> double_pendulum</li></ul>
+<pre><code class="text">inputs {&#x27;w&#x27;: 2.0, &#x27;L&#x27;: 2.1}
+-&gt; 2.4603 m/s^2   (ran on double_pendulum_fast_mode__g.onnx; matches the Python engine)</code></pre>
+<h3 id="double_pendulum_fast_mode-w">Higher normal mode of a double pendulum — solve for higher normal-mode angular frequency — <code>double_pendulum_fast_mode.w</code></h3>
+<div class="math">\[\omega = \sqrt{\frac{\left(2 + \sqrt{2}\right) g}{L}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr><tr><td><code>L</code></td><td>length of each arm</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>rad/s</code></li><li><strong>File:</strong> <code>double_pendulum_fast_mode__w.onnx</code></li><li><strong>Applies when:</strong> double_pendulum</li></ul>
+<pre><code class="text">inputs {&#x27;g&#x27;: 2.0, &#x27;L&#x27;: 2.1}
+-&gt; 1.80323 rad/s   (ran on double_pendulum_fast_mode__w.onnx; matches the Python engine)</code></pre>
+<h3 id="double_pendulum_slow_mode-L">Lower normal mode of a double pendulum — solve for length of each arm — <code>double_pendulum_slow_mode.L</code></h3>
+<div class="math">\[\omega = \sqrt{\frac{\left(2 - \sqrt{2}\right) g}{L}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>w</code></td><td>lower normal-mode angular frequency</td><td><code>rad/s</code></td></tr><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m</code></li><li><strong>File:</strong> <code>double_pendulum_slow_mode__L.onnx</code></li><li><strong>Applies when:</strong> double_pendulum</li></ul>
+<pre><code class="text">inputs {&#x27;w&#x27;: 2.0, &#x27;g&#x27;: 2.1}
+-&gt; 0.307538 m   (ran on double_pendulum_slow_mode__L.onnx; matches the Python engine)</code></pre>
+<h3 id="double_pendulum_slow_mode-g">Lower normal mode of a double pendulum — solve for gravity — <code>double_pendulum_slow_mode.g</code></h3>
+<div class="math">\[\omega = \sqrt{\frac{\left(2 - \sqrt{2}\right) g}{L}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>w</code></td><td>lower normal-mode angular frequency</td><td><code>rad/s</code></td></tr><tr><td><code>L</code></td><td>length of each arm</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m/s^2</code></li><li><strong>File:</strong> <code>double_pendulum_slow_mode__g.onnx</code></li><li><strong>Applies when:</strong> double_pendulum</li></ul>
+<pre><code class="text">inputs {&#x27;w&#x27;: 2.0, &#x27;L&#x27;: 2.1}
+-&gt; 14.3397 m/s^2   (ran on double_pendulum_slow_mode__g.onnx; matches the Python engine)</code></pre>
+<h3 id="double_pendulum_slow_mode-w">Lower normal mode of a double pendulum — solve for lower normal-mode angular frequency — <code>double_pendulum_slow_mode.w</code></h3>
+<div class="math">\[\omega = \sqrt{\frac{\left(2 - \sqrt{2}\right) g}{L}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr><tr><td><code>L</code></td><td>length of each arm</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>rad/s</code></li><li><strong>File:</strong> <code>double_pendulum_slow_mode__w.onnx</code></li><li><strong>Applies when:</strong> double_pendulum</li></ul>
+<pre><code class="text">inputs {&#x27;g&#x27;: 2.0, &#x27;L&#x27;: 2.1}
+-&gt; 0.746922 rad/s   (ran on double_pendulum_slow_mode__w.onnx; matches the Python engine)</code></pre>
+<h3 id="driven_amplitude-A">Steady-state amplitude of a driven damped oscillator — solve for steady-state amplitude — <code>driven_amplitude.A</code></h3>
+<div class="math">\[A = \frac{F_{0}}{\sqrt{\left(k - m \omega^{2}\right)^{2} + \left(b \omega\right)^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>F0</code></td><td>driving force amplitude</td><td><code>N</code></td></tr><tr><td><code>k</code></td><td>spring constant</td><td><code>N/m</code></td></tr><tr><td><code>m</code></td><td>oscillating mass</td><td><code>kg</code></td></tr><tr><td><code>b</code></td><td>viscous damping coefficient</td><td><code>kg/s</code></td></tr><tr><td><code>w</code></td><td>driving angular frequency</td><td><code>rad/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m</code></li><li><strong>File:</strong> <code>driven_amplitude__A.onnx</code></li><li><strong>Applies when:</strong> driven</li></ul>
+<pre><code class="text">inputs {&#x27;F0&#x27;: 2.0, &#x27;k&#x27;: 2.1, &#x27;m&#x27;: 2.2, &#x27;b&#x27;: 2.3, &#x27;w&#x27;: 2.4}
+-&gt; 0.167696 m   (ran on driven_amplitude__A.onnx; matches the Python engine)</code></pre>
+<h3 id="driven_amplitude-F0">Steady-state amplitude of a driven damped oscillator — solve for driving force amplitude — <code>driven_amplitude.F0</code></h3>
+<div class="math">\[A = \frac{F_{0}}{\sqrt{\left(k - m \omega^{2}\right)^{2} + \left(b \omega\right)^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>A</code></td><td>steady-state amplitude</td><td><code>m</code></td></tr><tr><td><code>k</code></td><td>spring constant</td><td><code>N/m</code></td></tr><tr><td><code>m</code></td><td>oscillating mass</td><td><code>kg</code></td></tr><tr><td><code>b</code></td><td>viscous damping coefficient</td><td><code>kg/s</code></td></tr><tr><td><code>w</code></td><td>driving angular frequency</td><td><code>rad/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>N</code></li><li><strong>File:</strong> <code>driven_amplitude__F0.onnx</code></li><li><strong>Applies when:</strong> driven</li></ul>
+<pre><code class="text">inputs {&#x27;A&#x27;: 2.0, &#x27;k&#x27;: 2.1, &#x27;m&#x27;: 2.2, &#x27;b&#x27;: 2.3, &#x27;w&#x27;: 2.4}
+-&gt; 23.8527 N   (ran on driven_amplitude__F0.onnx; matches the Python engine)</code></pre>
+<h3 id="driven_amplitude-b">Steady-state amplitude of a driven damped oscillator — solve for viscous damping coefficient — <code>driven_amplitude.b</code></h3>
+<div class="math">\[A = \frac{F_{0}}{\sqrt{\left(k - m \omega^{2}\right)^{2} + \left(b \omega\right)^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>A</code></td><td>steady-state amplitude</td><td><code>m</code></td></tr><tr><td><code>F0</code></td><td>driving force amplitude</td><td><code>N</code></td></tr><tr><td><code>k</code></td><td>spring constant</td><td><code>N/m</code></td></tr><tr><td><code>m</code></td><td>oscillating mass</td><td><code>kg</code></td></tr><tr><td><code>w</code></td><td>driving angular frequency</td><td><code>rad/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg/s</code></li><li><strong>File:</strong> <code>driven_amplitude__b.onnx</code></li><li><strong>Applies when:</strong> driven</li></ul>
+<pre><code class="text">inputs {&#x27;A&#x27;: 0.5, &#x27;F0&#x27;: 0.6, &#x27;k&#x27;: 0.7, &#x27;m&#x27;: 0.8, &#x27;w&#x27;: 0.9}
+-&gt; 1.33208 kg/s   (ran on driven_amplitude__b.onnx; matches the Python engine)</code></pre>
+<h3 id="driven_amplitude-k">Steady-state amplitude of a driven damped oscillator — solve for spring constant — <code>driven_amplitude.k</code></h3>
+<div class="math">\[A = \frac{F_{0}}{\sqrt{\left(k - m \omega^{2}\right)^{2} + \left(b \omega\right)^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>A</code></td><td>steady-state amplitude</td><td><code>m</code></td></tr><tr><td><code>F0</code></td><td>driving force amplitude</td><td><code>N</code></td></tr><tr><td><code>m</code></td><td>oscillating mass</td><td><code>kg</code></td></tr><tr><td><code>b</code></td><td>viscous damping coefficient</td><td><code>kg/s</code></td></tr><tr><td><code>w</code></td><td>driving angular frequency</td><td><code>rad/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>N/m</code></li><li><strong>File:</strong> <code>driven_amplitude__k.onnx</code></li><li><strong>Branches:</strong> 2 — take the one that is positive</li><li><strong>Applies when:</strong> driven</li></ul>
+<pre><code class="text">inputs {&#x27;A&#x27;: 0.5, &#x27;F0&#x27;: 0.6, &#x27;m&#x27;: 0.7, &#x27;b&#x27;: 0.8, &#x27;w&#x27;: 0.9}
+-&gt; -0.393, 1.527 N/m   (ran on driven_amplitude__k.onnx; matches the Python engine)</code></pre>
+<h3 id="driven_amplitude-m">Steady-state amplitude of a driven damped oscillator — solve for oscillating mass — <code>driven_amplitude.m</code></h3>
+<div class="math">\[A = \frac{F_{0}}{\sqrt{\left(k - m \omega^{2}\right)^{2} + \left(b \omega\right)^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>A</code></td><td>steady-state amplitude</td><td><code>m</code></td></tr><tr><td><code>F0</code></td><td>driving force amplitude</td><td><code>N</code></td></tr><tr><td><code>k</code></td><td>spring constant</td><td><code>N/m</code></td></tr><tr><td><code>b</code></td><td>viscous damping coefficient</td><td><code>kg/s</code></td></tr><tr><td><code>w</code></td><td>driving angular frequency</td><td><code>rad/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>driven_amplitude__m.onnx</code></li><li><strong>Branches:</strong> 2 — take the one that is positive</li><li><strong>Applies when:</strong> driven</li></ul>
+<pre><code class="text">inputs {&#x27;A&#x27;: 0.5, &#x27;F0&#x27;: 0.6, &#x27;k&#x27;: 0.7, &#x27;b&#x27;: 0.8, &#x27;w&#x27;: 0.9}
+-&gt; -0.320988, 2.04938 kg   (ran on driven_amplitude__m.onnx; matches the Python engine)</code></pre>
+<h3 id="driven_amplitude-w">Steady-state amplitude of a driven damped oscillator — solve for driving angular frequency — <code>driven_amplitude.w</code></h3>
+<div class="math">\[A = \frac{F_{0}}{\sqrt{\left(k - m \omega^{2}\right)^{2} + \left(b \omega\right)^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>A</code></td><td>steady-state amplitude</td><td><code>m</code></td></tr><tr><td><code>F0</code></td><td>driving force amplitude</td><td><code>N</code></td></tr><tr><td><code>k</code></td><td>spring constant</td><td><code>N/m</code></td></tr><tr><td><code>m</code></td><td>oscillating mass</td><td><code>kg</code></td></tr><tr><td><code>b</code></td><td>viscous damping coefficient</td><td><code>kg/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>rad/s</code></li><li><strong>File:</strong> <code>driven_amplitude__w.onnx</code></li><li><strong>Branches:</strong> 2 — take the one that is positive</li><li><strong>Applies when:</strong> driven</li></ul>
+<pre><code class="text">inputs {&#x27;A&#x27;: 0.5, &#x27;F0&#x27;: 0.6, &#x27;k&#x27;: 0.7, &#x27;m&#x27;: 0.8, &#x27;b&#x27;: 0.9}
+-&gt; nan, 1.21835 rad/s   (ran on driven_amplitude__w.onnx; matches the Python engine)</code></pre>
+<h3 id="elastic_collision_first_final-m1">Final velocity of the first body in a one-dimensional elastic collision — solve for mass of the first body — <code>elastic_collision_first_final.m1</code></h3>
+<div class="math">\[v_{1f} = \frac{\left(m_{1} - m_{2}\right) v_{1} + 2 m_{2} v_{2}}{m_{1} + m_{2}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>v1f</code></td><td>final velocity of the first body</td><td><code>m/s</code></td></tr><tr><td><code>m2</code></td><td>mass of the second body</td><td><code>kg</code></td></tr><tr><td><code>v1</code></td><td>initial velocity of the first body</td><td><code>m/s</code></td></tr><tr><td><code>v2</code></td><td>initial velocity of the second body</td><td><code>m/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>elastic_collision_first_final__m1.onnx</code></li><li><strong>Applies when:</strong> elastic_collision</li></ul>
+<h3 id="elastic_collision_first_final-m2">Final velocity of the first body in a one-dimensional elastic collision — solve for mass of the second body — <code>elastic_collision_first_final.m2</code></h3>
+<div class="math">\[v_{1f} = \frac{\left(m_{1} - m_{2}\right) v_{1} + 2 m_{2} v_{2}}{m_{1} + m_{2}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>v1f</code></td><td>final velocity of the first body</td><td><code>m/s</code></td></tr><tr><td><code>m1</code></td><td>mass of the first body</td><td><code>kg</code></td></tr><tr><td><code>v1</code></td><td>initial velocity of the first body</td><td><code>m/s</code></td></tr><tr><td><code>v2</code></td><td>initial velocity of the second body</td><td><code>m/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>elastic_collision_first_final__m2.onnx</code></li><li><strong>Applies when:</strong> elastic_collision</li></ul>
+<h3 id="elastic_collision_first_final-v1">Final velocity of the first body in a one-dimensional elastic collision — solve for initial velocity of the first body — <code>elastic_collision_first_final.v1</code></h3>
+<div class="math">\[v_{1f} = \frac{\left(m_{1} - m_{2}\right) v_{1} + 2 m_{2} v_{2}}{m_{1} + m_{2}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>v1f</code></td><td>final velocity of the first body</td><td><code>m/s</code></td></tr><tr><td><code>m1</code></td><td>mass of the first body</td><td><code>kg</code></td></tr><tr><td><code>m2</code></td><td>mass of the second body</td><td><code>kg</code></td></tr><tr><td><code>v2</code></td><td>initial velocity of the second body</td><td><code>m/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m/s</code></li><li><strong>File:</strong> <code>elastic_collision_first_final__v1.onnx</code></li><li><strong>Applies when:</strong> elastic_collision</li></ul>
+<pre><code class="text">inputs {&#x27;v1f&#x27;: 2.0, &#x27;m1&#x27;: 2.1, &#x27;m2&#x27;: 2.2, &#x27;v2&#x27;: 2.3}
+-&gt; 15.2 m/s   (ran on elastic_collision_first_final__v1.onnx; matches the Python engine)</code></pre>
+<h3 id="elastic_collision_first_final-v1f">Final velocity of the first body in a one-dimensional elastic collision — solve for final velocity of the first body — <code>elastic_collision_first_final.v1f</code></h3>
+<div class="math">\[v_{1f} = \frac{\left(m_{1} - m_{2}\right) v_{1} + 2 m_{2} v_{2}}{m_{1} + m_{2}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>m1</code></td><td>mass of the first body</td><td><code>kg</code></td></tr><tr><td><code>m2</code></td><td>mass of the second body</td><td><code>kg</code></td></tr><tr><td><code>v1</code></td><td>initial velocity of the first body</td><td><code>m/s</code></td></tr><tr><td><code>v2</code></td><td>initial velocity of the second body</td><td><code>m/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m/s</code></li><li><strong>File:</strong> <code>elastic_collision_first_final__v1f.onnx</code></li><li><strong>Applies when:</strong> elastic_collision</li></ul>
+<pre><code class="text">inputs {&#x27;m1&#x27;: 2.0, &#x27;m2&#x27;: 2.1, &#x27;v1&#x27;: 2.2, &#x27;v2&#x27;: 2.3}
+-&gt; 2.30244 m/s   (ran on elastic_collision_first_final__v1f.onnx; matches the Python engine)</code></pre>
+<h3 id="elastic_collision_first_final-v2">Final velocity of the first body in a one-dimensional elastic collision — solve for initial velocity of the second body — <code>elastic_collision_first_final.v2</code></h3>
+<div class="math">\[v_{1f} = \frac{\left(m_{1} - m_{2}\right) v_{1} + 2 m_{2} v_{2}}{m_{1} + m_{2}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>v1f</code></td><td>final velocity of the first body</td><td><code>m/s</code></td></tr><tr><td><code>m1</code></td><td>mass of the first body</td><td><code>kg</code></td></tr><tr><td><code>m2</code></td><td>mass of the second body</td><td><code>kg</code></td></tr><tr><td><code>v1</code></td><td>initial velocity of the first body</td><td><code>m/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m/s</code></li><li><strong>File:</strong> <code>elastic_collision_first_final__v2.onnx</code></li><li><strong>Applies when:</strong> elastic_collision</li></ul>
+<pre><code class="text">inputs {&#x27;v1f&#x27;: 2.0, &#x27;m1&#x27;: 2.1, &#x27;m2&#x27;: 2.2, &#x27;v1&#x27;: 2.3}
+-&gt; 2.00682 m/s   (ran on elastic_collision_first_final__v2.onnx; matches the Python engine)</code></pre>
+<h3 id="elastic_collision_second_final-m1">Final velocity of the second body in a one-dimensional elastic collision — solve for mass of the first body — <code>elastic_collision_second_final.m1</code></h3>
+<div class="math">\[v_{2f} = \frac{\left(m_{2} - m_{1}\right) v_{2} + 2 m_{1} v_{1}}{m_{1} + m_{2}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>v2f</code></td><td>final velocity of the second body</td><td><code>m/s</code></td></tr><tr><td><code>m2</code></td><td>mass of the second body</td><td><code>kg</code></td></tr><tr><td><code>v1</code></td><td>initial velocity of the first body</td><td><code>m/s</code></td></tr><tr><td><code>v2</code></td><td>initial velocity of the second body</td><td><code>m/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>elastic_collision_second_final__m1.onnx</code></li><li><strong>Applies when:</strong> elastic_collision</li></ul>
+<h3 id="elastic_collision_second_final-m2">Final velocity of the second body in a one-dimensional elastic collision — solve for mass of the second body — <code>elastic_collision_second_final.m2</code></h3>
+<div class="math">\[v_{2f} = \frac{\left(m_{2} - m_{1}\right) v_{2} + 2 m_{1} v_{1}}{m_{1} + m_{2}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>v2f</code></td><td>final velocity of the second body</td><td><code>m/s</code></td></tr><tr><td><code>m1</code></td><td>mass of the first body</td><td><code>kg</code></td></tr><tr><td><code>v1</code></td><td>initial velocity of the first body</td><td><code>m/s</code></td></tr><tr><td><code>v2</code></td><td>initial velocity of the second body</td><td><code>m/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>elastic_collision_second_final__m2.onnx</code></li><li><strong>Applies when:</strong> elastic_collision</li></ul>
+<h3 id="elastic_collision_second_final-v1">Final velocity of the second body in a one-dimensional elastic collision — solve for initial velocity of the first body — <code>elastic_collision_second_final.v1</code></h3>
+<div class="math">\[v_{2f} = \frac{\left(m_{2} - m_{1}\right) v_{2} + 2 m_{1} v_{1}}{m_{1} + m_{2}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>v2f</code></td><td>final velocity of the second body</td><td><code>m/s</code></td></tr><tr><td><code>m1</code></td><td>mass of the first body</td><td><code>kg</code></td></tr><tr><td><code>m2</code></td><td>mass of the second body</td><td><code>kg</code></td></tr><tr><td><code>v2</code></td><td>initial velocity of the second body</td><td><code>m/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m/s</code></li><li><strong>File:</strong> <code>elastic_collision_second_final__v1.onnx</code></li><li><strong>Applies when:</strong> elastic_collision</li></ul>
+<pre><code class="text">inputs {&#x27;v2f&#x27;: 2.0, &#x27;m1&#x27;: 2.1, &#x27;m2&#x27;: 2.2, &#x27;v2&#x27;: 2.3}
+-&gt; 1.99286 m/s   (ran on elastic_collision_second_final__v1.onnx; matches the Python engine)</code></pre>
+<h3 id="elastic_collision_second_final-v2">Final velocity of the second body in a one-dimensional elastic collision — solve for initial velocity of the second body — <code>elastic_collision_second_final.v2</code></h3>
+<div class="math">\[v_{2f} = \frac{\left(m_{2} - m_{1}\right) v_{2} + 2 m_{1} v_{1}}{m_{1} + m_{2}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>v2f</code></td><td>final velocity of the second body</td><td><code>m/s</code></td></tr><tr><td><code>m1</code></td><td>mass of the first body</td><td><code>kg</code></td></tr><tr><td><code>m2</code></td><td>mass of the second body</td><td><code>kg</code></td></tr><tr><td><code>v1</code></td><td>initial velocity of the first body</td><td><code>m/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m/s</code></li><li><strong>File:</strong> <code>elastic_collision_second_final__v2.onnx</code></li><li><strong>Applies when:</strong> elastic_collision</li></ul>
+<pre><code class="text">inputs {&#x27;v2f&#x27;: 2.0, &#x27;m1&#x27;: 2.1, &#x27;m2&#x27;: 2.2, &#x27;v1&#x27;: 2.3}
+-&gt; -10.6 m/s   (ran on elastic_collision_second_final__v2.onnx; matches the Python engine)</code></pre>
+<h3 id="elastic_collision_second_final-v2f">Final velocity of the second body in a one-dimensional elastic collision — solve for final velocity of the second body — <code>elastic_collision_second_final.v2f</code></h3>
+<div class="math">\[v_{2f} = \frac{\left(m_{2} - m_{1}\right) v_{2} + 2 m_{1} v_{1}}{m_{1} + m_{2}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>m1</code></td><td>mass of the first body</td><td><code>kg</code></td></tr><tr><td><code>m2</code></td><td>mass of the second body</td><td><code>kg</code></td></tr><tr><td><code>v1</code></td><td>initial velocity of the first body</td><td><code>m/s</code></td></tr><tr><td><code>v2</code></td><td>initial velocity of the second body</td><td><code>m/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m/s</code></li><li><strong>File:</strong> <code>elastic_collision_second_final__v2f.onnx</code></li><li><strong>Applies when:</strong> elastic_collision</li></ul>
+<pre><code class="text">inputs {&#x27;m1&#x27;: 2.0, &#x27;m2&#x27;: 2.1, &#x27;v1&#x27;: 2.2, &#x27;v2&#x27;: 2.3}
+-&gt; 2.20244 m/s   (ran on elastic_collision_second_final__v2f.onnx; matches the Python engine)</code></pre>
+<h3 id="escape_speed-G">Escape speed — solve for constant — <code>escape_speed.G</code></h3>
+<div class="math">\[v = \sqrt{\frac{2 G M}{r}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>v</code></td><td>escape speed</td><td><code>m/s</code></td></tr><tr><td><code>M</code></td><td>mass of the body</td><td><code>kg</code></td></tr><tr><td><code>r</code></td><td>distance from its center</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>N*m^2/kg^2</code></li><li><strong>File:</strong> <code>escape_speed__G.onnx</code></li><li><strong>Applies when:</strong> escape</li></ul>
+<pre><code class="text">inputs {&#x27;v&#x27;: 2.0, &#x27;M&#x27;: 2.1, &#x27;r&#x27;: 2.2}
+-&gt; 2.09524 N*m^2/kg^2   (ran on escape_speed__G.onnx; matches the Python engine)</code></pre>
+<h3 id="escape_speed-M">Escape speed — solve for mass of the body — <code>escape_speed.M</code></h3>
+<div class="math">\[v = \sqrt{\frac{2 G M}{r}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>v</code></td><td>escape speed</td><td><code>m/s</code></td></tr><tr><td><code>G</code></td><td>gravitational constant</td><td><code>N*m^2/kg^2</code></td></tr><tr><td><code>r</code></td><td>distance from its center</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>escape_speed__M.onnx</code></li><li><strong>Applies when:</strong> escape</li></ul>
+<pre><code class="text">inputs {&#x27;v&#x27;: 2.0, &#x27;G&#x27;: 2.1, &#x27;r&#x27;: 2.2}
+-&gt; 2.09524 kg   (ran on escape_speed__M.onnx; matches the Python engine)</code></pre>
+<h3 id="escape_speed-r">Escape speed — solve for distance from its center — <code>escape_speed.r</code></h3>
+<div class="math">\[v = \sqrt{\frac{2 G M}{r}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>v</code></td><td>escape speed</td><td><code>m/s</code></td></tr><tr><td><code>G</code></td><td>gravitational constant</td><td><code>N*m^2/kg^2</code></td></tr><tr><td><code>M</code></td><td>mass of the body</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m</code></li><li><strong>File:</strong> <code>escape_speed__r.onnx</code></li><li><strong>Applies when:</strong> escape</li></ul>
+<pre><code class="text">inputs {&#x27;v&#x27;: 2.0, &#x27;G&#x27;: 2.1, &#x27;M&#x27;: 2.2}
+-&gt; 2.31 m   (ran on escape_speed__r.onnx; matches the Python engine)</code></pre>
+<h3 id="escape_speed-v">Escape speed — solve for escape speed — <code>escape_speed.v</code></h3>
+<div class="math">\[v = \sqrt{\frac{2 G M}{r}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>G</code></td><td>gravitational constant</td><td><code>N*m^2/kg^2</code></td></tr><tr><td><code>M</code></td><td>mass of the body</td><td><code>kg</code></td></tr><tr><td><code>r</code></td><td>distance from its center</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m/s</code></li><li><strong>File:</strong> <code>escape_speed__v.onnx</code></li><li><strong>Applies when:</strong> escape</li></ul>
+<pre><code class="text">inputs {&#x27;G&#x27;: 2.0, &#x27;M&#x27;: 2.1, &#x27;r&#x27;: 2.2}
+-&gt; 1.95402 m/s   (ran on escape_speed__v.onnx; matches the Python engine)</code></pre>
+<h3 id="foucault_precession_period-T">Precession period of a Foucault pendulum — solve for time for the swing plane to turn once — <code>foucault_precession_period.T</code></h3>
+<div class="math">\[T = \frac{2 \pi}{\Omega \sin\left(\phi\right)}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>W</code></td><td>angular frequency</td><td><code>rad/s</code></td></tr><tr><td><code>phi</code></td><td>latitude</td><td><code>rad</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>s</code></li><li><strong>File:</strong> <code>foucault_precession_period__T.onnx</code></li><li><strong>Applies when:</strong> foucault</li></ul>
+<pre><code class="text">inputs {&#x27;W&#x27;: 2.0, &#x27;phi&#x27;: 2.1}
+-&gt; 3.63943 s   (ran on foucault_precession_period__T.onnx; matches the Python engine)</code></pre>
+<h3 id="foucault_precession_period-W">Precession period of a Foucault pendulum — solve for rotation — <code>foucault_precession_period.W</code></h3>
+<div class="math">\[T = \frac{2 \pi}{\Omega \sin\left(\phi\right)}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>T</code></td><td>time for the swing plane to turn once</td><td><code>s</code></td></tr><tr><td><code>phi</code></td><td>latitude</td><td><code>rad</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>rad/s</code></li><li><strong>File:</strong> <code>foucault_precession_period__W.onnx</code></li><li><strong>Applies when:</strong> foucault</li></ul>
+<pre><code class="text">inputs {&#x27;T&#x27;: 2.0, &#x27;phi&#x27;: 2.1}
+-&gt; 3.63943 rad/s   (ran on foucault_precession_period__W.onnx; matches the Python engine)</code></pre>
+<h3 id="foucault_precession_period-phi">Precession period of a Foucault pendulum — solve for latitude — <code>foucault_precession_period.phi</code></h3>
+<div class="math">\[T = \frac{2 \pi}{\Omega \sin\left(\phi\right)}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>T</code></td><td>time for the swing plane to turn once</td><td><code>s</code></td></tr><tr><td><code>W</code></td><td>angular frequency</td><td><code>rad/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>rad</code></li><li><strong>File:</strong> <code>foucault_precession_period__phi.onnx</code></li><li><strong>Branches:</strong> 2 — take the one that is positive</li><li><strong>Applies when:</strong> foucault</li></ul>
+<h3 id="inertia_hollow_sphere-Ir">Moment of inertia of a thin spherical shell — solve for moment of inertia about the central axis — <code>inertia_hollow_sphere.Ir</code></h3>
+<div class="math">\[I_{r} = \frac{2 m R^{2}}{3}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>m</code></td><td>mass</td><td><code>kg</code></td></tr><tr><td><code>R</code></td><td>radius</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg*m^2</code></li><li><strong>File:</strong> <code>inertia_hollow_sphere__Ir.onnx</code></li><li><strong>Applies when:</strong> hollow_sphere</li></ul>
+<pre><code class="text">inputs {&#x27;m&#x27;: 2.0, &#x27;R&#x27;: 2.1}
+-&gt; 5.88 kg*m^2   (ran on inertia_hollow_sphere__Ir.onnx; matches the Python engine)</code></pre>
+<h3 id="inertia_hollow_sphere-R">Moment of inertia of a thin spherical shell — solve for radius — <code>inertia_hollow_sphere.R</code></h3>
+<div class="math">\[I_{r} = \frac{2 m R^{2}}{3}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>Ir</code></td><td>moment of inertia about the central axis</td><td><code>kg*m^2</code></td></tr><tr><td><code>m</code></td><td>mass</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m</code></li><li><strong>File:</strong> <code>inertia_hollow_sphere__R.onnx</code></li><li><strong>Applies when:</strong> hollow_sphere</li></ul>
+<pre><code class="text">inputs {&#x27;Ir&#x27;: 2.0, &#x27;m&#x27;: 2.1}
+-&gt; 1.19523 m   (ran on inertia_hollow_sphere__R.onnx; matches the Python engine)</code></pre>
+<h3 id="inertia_hollow_sphere-m">Moment of inertia of a thin spherical shell — solve for mass — <code>inertia_hollow_sphere.m</code></h3>
+<div class="math">\[I_{r} = \frac{2 m R^{2}}{3}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>Ir</code></td><td>moment of inertia about the central axis</td><td><code>kg*m^2</code></td></tr><tr><td><code>R</code></td><td>radius</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>inertia_hollow_sphere__m.onnx</code></li><li><strong>Applies when:</strong> hollow_sphere</li></ul>
+<pre><code class="text">inputs {&#x27;Ir&#x27;: 2.0, &#x27;R&#x27;: 2.1}
+-&gt; 0.680272 kg   (ran on inertia_hollow_sphere__m.onnx; matches the Python engine)</code></pre>
+<h3 id="inertia_rod_center-Ir">Moment of inertia of a thin rod about its center — solve for moment of inertia about its center — <code>inertia_rod_center.Ir</code></h3>
+<div class="math">\[I_{r} = \frac{m L_{r}^{2}}{12}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>m</code></td><td>mass of the rod</td><td><code>kg</code></td></tr><tr><td><code>Lr</code></td><td>length of the rod</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg*m^2</code></li><li><strong>File:</strong> <code>inertia_rod_center__Ir.onnx</code></li><li><strong>Applies when:</strong> rod; about_center</li></ul>
+<pre><code class="text">inputs {&#x27;m&#x27;: 2.0, &#x27;Lr&#x27;: 2.1}
+-&gt; 0.735 kg*m^2   (ran on inertia_rod_center__Ir.onnx; matches the Python engine)</code></pre>
+<h3 id="inertia_rod_center-Lr">Moment of inertia of a thin rod about its center — solve for length of the rod — <code>inertia_rod_center.Lr</code></h3>
+<div class="math">\[I_{r} = \frac{m L_{r}^{2}}{12}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>Ir</code></td><td>moment of inertia about its center</td><td><code>kg*m^2</code></td></tr><tr><td><code>m</code></td><td>mass of the rod</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m</code></li><li><strong>File:</strong> <code>inertia_rod_center__Lr.onnx</code></li><li><strong>Applies when:</strong> rod; about_center</li></ul>
+<pre><code class="text">inputs {&#x27;Ir&#x27;: 2.0, &#x27;m&#x27;: 2.1}
+-&gt; 3.38062 m   (ran on inertia_rod_center__Lr.onnx; matches the Python engine)</code></pre>
+<h3 id="inertia_rod_center-m">Moment of inertia of a thin rod about its center — solve for mass of the rod — <code>inertia_rod_center.m</code></h3>
+<div class="math">\[I_{r} = \frac{m L_{r}^{2}}{12}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>Ir</code></td><td>moment of inertia about its center</td><td><code>kg*m^2</code></td></tr><tr><td><code>Lr</code></td><td>length of the rod</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>inertia_rod_center__m.onnx</code></li><li><strong>Applies when:</strong> rod; about_center</li></ul>
+<pre><code class="text">inputs {&#x27;Ir&#x27;: 2.0, &#x27;Lr&#x27;: 2.1}
+-&gt; 5.44218 kg   (ran on inertia_rod_center__m.onnx; matches the Python engine)</code></pre>
+<h3 id="inertia_rod_end-Ir">Moment of inertia of a thin rod about one end — solve for moment of inertia about one end — <code>inertia_rod_end.Ir</code></h3>
+<div class="math">\[I_{r} = \frac{m L_{r}^{2}}{3}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>m</code></td><td>mass of the rod</td><td><code>kg</code></td></tr><tr><td><code>Lr</code></td><td>length of the rod</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg*m^2</code></li><li><strong>File:</strong> <code>inertia_rod_end__Ir.onnx</code></li><li><strong>Applies when:</strong> rod; about_end</li></ul>
+<pre><code class="text">inputs {&#x27;m&#x27;: 2.0, &#x27;Lr&#x27;: 2.1}
+-&gt; 2.94 kg*m^2   (ran on inertia_rod_end__Ir.onnx; matches the Python engine)</code></pre>
+<h3 id="inertia_rod_end-Lr">Moment of inertia of a thin rod about one end — solve for length of the rod — <code>inertia_rod_end.Lr</code></h3>
+<div class="math">\[I_{r} = \frac{m L_{r}^{2}}{3}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>Ir</code></td><td>moment of inertia about one end</td><td><code>kg*m^2</code></td></tr><tr><td><code>m</code></td><td>mass of the rod</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m</code></li><li><strong>File:</strong> <code>inertia_rod_end__Lr.onnx</code></li><li><strong>Applies when:</strong> rod; about_end</li></ul>
+<pre><code class="text">inputs {&#x27;Ir&#x27;: 2.0, &#x27;m&#x27;: 2.1}
+-&gt; 1.69031 m   (ran on inertia_rod_end__Lr.onnx; matches the Python engine)</code></pre>
+<h3 id="inertia_rod_end-m">Moment of inertia of a thin rod about one end — solve for mass of the rod — <code>inertia_rod_end.m</code></h3>
+<div class="math">\[I_{r} = \frac{m L_{r}^{2}}{3}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>Ir</code></td><td>moment of inertia about one end</td><td><code>kg*m^2</code></td></tr><tr><td><code>Lr</code></td><td>length of the rod</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>inertia_rod_end__m.onnx</code></li><li><strong>Applies when:</strong> rod; about_end</li></ul>
+<pre><code class="text">inputs {&#x27;Ir&#x27;: 2.0, &#x27;Lr&#x27;: 2.1}
+-&gt; 1.36054 kg   (ran on inertia_rod_end__m.onnx; matches the Python engine)</code></pre>
+<h3 id="inertia_solid_disk-Ir">Moment of inertia of a solid disk about its axis — solve for moment of inertia about the central axis — <code>inertia_solid_disk.Ir</code></h3>
+<div class="math">\[I_{r} = \frac{m R^{2}}{2}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>m</code></td><td>mass</td><td><code>kg</code></td></tr><tr><td><code>R</code></td><td>radius</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg*m^2</code></li><li><strong>File:</strong> <code>inertia_solid_disk__Ir.onnx</code></li><li><strong>Applies when:</strong> solid_disk</li></ul>
+<pre><code class="text">inputs {&#x27;m&#x27;: 2.0, &#x27;R&#x27;: 2.1}
+-&gt; 4.41 kg*m^2   (ran on inertia_solid_disk__Ir.onnx; matches the Python engine)</code></pre>
+<h3 id="inertia_solid_disk-R">Moment of inertia of a solid disk about its axis — solve for radius — <code>inertia_solid_disk.R</code></h3>
+<div class="math">\[I_{r} = \frac{m R^{2}}{2}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>Ir</code></td><td>moment of inertia about the central axis</td><td><code>kg*m^2</code></td></tr><tr><td><code>m</code></td><td>mass</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m</code></li><li><strong>File:</strong> <code>inertia_solid_disk__R.onnx</code></li><li><strong>Applies when:</strong> solid_disk</li></ul>
+<pre><code class="text">inputs {&#x27;Ir&#x27;: 2.0, &#x27;m&#x27;: 2.1}
+-&gt; 1.38013 m   (ran on inertia_solid_disk__R.onnx; matches the Python engine)</code></pre>
+<h3 id="inertia_solid_disk-m">Moment of inertia of a solid disk about its axis — solve for mass — <code>inertia_solid_disk.m</code></h3>
+<div class="math">\[I_{r} = \frac{m R^{2}}{2}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>Ir</code></td><td>moment of inertia about the central axis</td><td><code>kg*m^2</code></td></tr><tr><td><code>R</code></td><td>radius</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>inertia_solid_disk__m.onnx</code></li><li><strong>Applies when:</strong> solid_disk</li></ul>
+<pre><code class="text">inputs {&#x27;Ir&#x27;: 2.0, &#x27;R&#x27;: 2.1}
+-&gt; 0.907029 kg   (ran on inertia_solid_disk__m.onnx; matches the Python engine)</code></pre>
+<h3 id="inertia_solid_sphere-Ir">Moment of inertia of a solid sphere — solve for moment of inertia about the central axis — <code>inertia_solid_sphere.Ir</code></h3>
+<div class="math">\[I_{r} = \frac{2 m R^{2}}{5}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>m</code></td><td>mass</td><td><code>kg</code></td></tr><tr><td><code>R</code></td><td>radius</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg*m^2</code></li><li><strong>File:</strong> <code>inertia_solid_sphere__Ir.onnx</code></li><li><strong>Applies when:</strong> solid_sphere</li></ul>
+<pre><code class="text">inputs {&#x27;m&#x27;: 2.0, &#x27;R&#x27;: 2.1}
+-&gt; 3.528 kg*m^2   (ran on inertia_solid_sphere__Ir.onnx; matches the Python engine)</code></pre>
+<h3 id="inertia_solid_sphere-R">Moment of inertia of a solid sphere — solve for radius — <code>inertia_solid_sphere.R</code></h3>
+<div class="math">\[I_{r} = \frac{2 m R^{2}}{5}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>Ir</code></td><td>moment of inertia about the central axis</td><td><code>kg*m^2</code></td></tr><tr><td><code>m</code></td><td>mass</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m</code></li><li><strong>File:</strong> <code>inertia_solid_sphere__R.onnx</code></li><li><strong>Applies when:</strong> solid_sphere</li></ul>
+<pre><code class="text">inputs {&#x27;Ir&#x27;: 2.0, &#x27;m&#x27;: 2.1}
+-&gt; 1.54303 m   (ran on inertia_solid_sphere__R.onnx; matches the Python engine)</code></pre>
+<h3 id="inertia_solid_sphere-m">Moment of inertia of a solid sphere — solve for mass — <code>inertia_solid_sphere.m</code></h3>
+<div class="math">\[I_{r} = \frac{2 m R^{2}}{5}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>Ir</code></td><td>moment of inertia about the central axis</td><td><code>kg*m^2</code></td></tr><tr><td><code>R</code></td><td>radius</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>inertia_solid_sphere__m.onnx</code></li><li><strong>Applies when:</strong> solid_sphere</li></ul>
+<pre><code class="text">inputs {&#x27;Ir&#x27;: 2.0, &#x27;R&#x27;: 2.1}
+-&gt; 1.13379 kg   (ran on inertia_solid_sphere__m.onnx; matches the Python engine)</code></pre>
+<h3 id="kepler_period_semi_major-G">Orbital period from the semi-major axis (Kepler&#x27;s third law) — solve for constant — <code>kepler_period_semi_major.G</code></h3>
+<div class="math">\[T = 2 \pi \sqrt{\frac{a^{3}}{G M}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>T</code></td><td>orbital period</td><td><code>s</code></td></tr><tr><td><code>a</code></td><td>semi-major axis</td><td><code>m</code></td></tr><tr><td><code>M</code></td><td>mass of the central body</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>N*m^2/kg^2</code></li><li><strong>File:</strong> <code>kepler_period_semi_major__G.onnx</code></li><li><strong>Applies when:</strong> orbit</li></ul>
+<pre><code class="text">inputs {&#x27;T&#x27;: 2.0, &#x27;a&#x27;: 2.1, &#x27;M&#x27;: 2.2}
+-&gt; 41.5465 N*m^2/kg^2   (ran on kepler_period_semi_major__G.onnx; matches the Python engine)</code></pre>
+<h3 id="kepler_period_semi_major-M">Orbital period from the semi-major axis (Kepler&#x27;s third law) — solve for mass of the central body — <code>kepler_period_semi_major.M</code></h3>
+<div class="math">\[T = 2 \pi \sqrt{\frac{a^{3}}{G M}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>T</code></td><td>orbital period</td><td><code>s</code></td></tr><tr><td><code>a</code></td><td>semi-major axis</td><td><code>m</code></td></tr><tr><td><code>G</code></td><td>gravitational constant</td><td><code>N*m^2/kg^2</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>kepler_period_semi_major__M.onnx</code></li><li><strong>Applies when:</strong> orbit</li></ul>
+<pre><code class="text">inputs {&#x27;T&#x27;: 2.0, &#x27;a&#x27;: 2.1, &#x27;G&#x27;: 2.2}
+-&gt; 41.5465 kg   (ran on kepler_period_semi_major__M.onnx; matches the Python engine)</code></pre>
+<h3 id="kepler_period_semi_major-T">Orbital period from the semi-major axis (Kepler&#x27;s third law) — solve for orbital period — <code>kepler_period_semi_major.T</code></h3>
+<div class="math">\[T = 2 \pi \sqrt{\frac{a^{3}}{G M}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>a</code></td><td>semi-major axis</td><td><code>m</code></td></tr><tr><td><code>G</code></td><td>gravitational constant</td><td><code>N*m^2/kg^2</code></td></tr><tr><td><code>M</code></td><td>mass of the central body</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>s</code></li><li><strong>File:</strong> <code>kepler_period_semi_major__T.onnx</code></li><li><strong>Applies when:</strong> orbit</li></ul>
+<pre><code class="text">inputs {&#x27;a&#x27;: 2.0, &#x27;G&#x27;: 2.1, &#x27;M&#x27;: 2.2}
+-&gt; 8.26806 s   (ran on kepler_period_semi_major__T.onnx; matches the Python engine)</code></pre>
+<h3 id="kepler_period_semi_major-a">Orbital period from the semi-major axis (Kepler&#x27;s third law) — solve for semi-major axis — <code>kepler_period_semi_major.a</code></h3>
+<div class="math">\[T = 2 \pi \sqrt{\frac{a^{3}}{G M}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>T</code></td><td>orbital period</td><td><code>s</code></td></tr><tr><td><code>G</code></td><td>gravitational constant</td><td><code>N*m^2/kg^2</code></td></tr><tr><td><code>M</code></td><td>mass of the central body</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m</code></li><li><strong>File:</strong> <code>kepler_period_semi_major__a.onnx</code></li><li><strong>Applies when:</strong> orbit</li></ul>
+<pre><code class="text">inputs {&#x27;T&#x27;: 2.0, &#x27;G&#x27;: 2.1, &#x27;M&#x27;: 2.2}
+-&gt; 0.776451 m   (ran on kepler_period_semi_major__a.onnx; matches the Python engine)</code></pre>
+<h3 id="physical_pendulum_period-Ir">Period of a physical pendulum — solve for moment of inertia about the pivot — <code>physical_pendulum_period.Ir</code></h3>
+<div class="math">\[T = 2 \pi \sqrt{\frac{I_{r}}{m g d}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>T</code></td><td>small-oscillation period</td><td><code>s</code></td></tr><tr><td><code>m</code></td><td>mass of the body</td><td><code>kg</code></td></tr><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr><tr><td><code>d</code></td><td>distance from the pivot to the center of mass</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg*m^2</code></li><li><strong>File:</strong> <code>physical_pendulum_period__Ir.onnx</code></li><li><strong>Applies when:</strong> physical_pendulum</li></ul>
+<pre><code class="text">inputs {&#x27;T&#x27;: 2.0, &#x27;m&#x27;: 2.1, &#x27;g&#x27;: 2.2, &#x27;d&#x27;: 2.3}
+-&gt; 1.07664 kg*m^2   (ran on physical_pendulum_period__Ir.onnx; matches the Python engine)</code></pre>
+<h3 id="physical_pendulum_period-T">Period of a physical pendulum — solve for small-oscillation period — <code>physical_pendulum_period.T</code></h3>
+<div class="math">\[T = 2 \pi \sqrt{\frac{I_{r}}{m g d}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>Ir</code></td><td>moment of inertia about the pivot</td><td><code>kg*m^2</code></td></tr><tr><td><code>m</code></td><td>mass of the body</td><td><code>kg</code></td></tr><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr><tr><td><code>d</code></td><td>distance from the pivot to the center of mass</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>s</code></li><li><strong>File:</strong> <code>physical_pendulum_period__T.onnx</code></li><li><strong>Applies when:</strong> physical_pendulum</li></ul>
+<pre><code class="text">inputs {&#x27;Ir&#x27;: 2.0, &#x27;m&#x27;: 2.1, &#x27;g&#x27;: 2.2, &#x27;d&#x27;: 2.3}
+-&gt; 2.7259 s   (ran on physical_pendulum_period__T.onnx; matches the Python engine)</code></pre>
+<h3 id="physical_pendulum_period-d">Period of a physical pendulum — solve for distance from the pivot to the center of mass — <code>physical_pendulum_period.d</code></h3>
+<div class="math">\[T = 2 \pi \sqrt{\frac{I_{r}}{m g d}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>T</code></td><td>small-oscillation period</td><td><code>s</code></td></tr><tr><td><code>Ir</code></td><td>moment of inertia about the pivot</td><td><code>kg*m^2</code></td></tr><tr><td><code>m</code></td><td>mass of the body</td><td><code>kg</code></td></tr><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m</code></li><li><strong>File:</strong> <code>physical_pendulum_period__d.onnx</code></li><li><strong>Applies when:</strong> physical_pendulum</li></ul>
+<pre><code class="text">inputs {&#x27;T&#x27;: 2.0, &#x27;Ir&#x27;: 2.1, &#x27;m&#x27;: 2.2, &#x27;g&#x27;: 2.3}
+-&gt; 4.09608 m   (ran on physical_pendulum_period__d.onnx; matches the Python engine)</code></pre>
+<h3 id="physical_pendulum_period-g">Period of a physical pendulum — solve for gravity — <code>physical_pendulum_period.g</code></h3>
+<div class="math">\[T = 2 \pi \sqrt{\frac{I_{r}}{m g d}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>T</code></td><td>small-oscillation period</td><td><code>s</code></td></tr><tr><td><code>Ir</code></td><td>moment of inertia about the pivot</td><td><code>kg*m^2</code></td></tr><tr><td><code>m</code></td><td>mass of the body</td><td><code>kg</code></td></tr><tr><td><code>d</code></td><td>distance from the pivot to the center of mass</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m/s^2</code></li><li><strong>File:</strong> <code>physical_pendulum_period__g.onnx</code></li><li><strong>Applies when:</strong> physical_pendulum</li></ul>
+<pre><code class="text">inputs {&#x27;T&#x27;: 2.0, &#x27;Ir&#x27;: 2.1, &#x27;m&#x27;: 2.2, &#x27;d&#x27;: 2.3}
+-&gt; 4.09608 m/s^2   (ran on physical_pendulum_period__g.onnx; matches the Python engine)</code></pre>
+<h3 id="physical_pendulum_period-m">Period of a physical pendulum — solve for mass of the body — <code>physical_pendulum_period.m</code></h3>
+<div class="math">\[T = 2 \pi \sqrt{\frac{I_{r}}{m g d}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>T</code></td><td>small-oscillation period</td><td><code>s</code></td></tr><tr><td><code>Ir</code></td><td>moment of inertia about the pivot</td><td><code>kg*m^2</code></td></tr><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr><tr><td><code>d</code></td><td>distance from the pivot to the center of mass</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>physical_pendulum_period__m.onnx</code></li><li><strong>Applies when:</strong> physical_pendulum</li></ul>
+<pre><code class="text">inputs {&#x27;T&#x27;: 2.0, &#x27;Ir&#x27;: 2.1, &#x27;g&#x27;: 2.2, &#x27;d&#x27;: 2.3}
+-&gt; 4.09608 kg   (ran on physical_pendulum_period__m.onnx; matches the Python engine)</code></pre>
+<h3 id="quality_factor-Qf">Quality factor of a damped oscillator — solve for quality factor — <code>quality_factor.Qf</code></h3>
+<div class="math">\[Q_{f} = \frac{\sqrt{k m}}{b}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>k</code></td><td>spring constant</td><td><code>N/m</code></td></tr><tr><td><code>m</code></td><td>oscillating mass</td><td><code>kg</code></td></tr><tr><td><code>b</code></td><td>viscous damping coefficient</td><td><code>kg/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>1</code></li><li><strong>File:</strong> <code>quality_factor__Qf.onnx</code></li><li><strong>Applies when:</strong> damped</li></ul>
+<pre><code class="text">inputs {&#x27;k&#x27;: 2.0, &#x27;m&#x27;: 2.1, &#x27;b&#x27;: 2.2}
+-&gt; 0.931541 1   (ran on quality_factor__Qf.onnx; matches the Python engine)</code></pre>
+<h3 id="quality_factor-b">Quality factor of a damped oscillator — solve for viscous damping coefficient — <code>quality_factor.b</code></h3>
+<div class="math">\[Q_{f} = \frac{\sqrt{k m}}{b}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>Qf</code></td><td>quality factor</td><td><code>1</code></td></tr><tr><td><code>k</code></td><td>spring constant</td><td><code>N/m</code></td></tr><tr><td><code>m</code></td><td>oscillating mass</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg/s</code></li><li><strong>File:</strong> <code>quality_factor__b.onnx</code></li><li><strong>Applies when:</strong> damped</li></ul>
+<pre><code class="text">inputs {&#x27;Qf&#x27;: 2.0, &#x27;k&#x27;: 2.1, &#x27;m&#x27;: 2.2}
+-&gt; 1.07471 kg/s   (ran on quality_factor__b.onnx; matches the Python engine)</code></pre>
+<h3 id="quality_factor-k">Quality factor of a damped oscillator — solve for spring constant — <code>quality_factor.k</code></h3>
+<div class="math">\[Q_{f} = \frac{\sqrt{k m}}{b}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>Qf</code></td><td>quality factor</td><td><code>1</code></td></tr><tr><td><code>m</code></td><td>oscillating mass</td><td><code>kg</code></td></tr><tr><td><code>b</code></td><td>viscous damping coefficient</td><td><code>kg/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>N/m</code></li><li><strong>File:</strong> <code>quality_factor__k.onnx</code></li><li><strong>Applies when:</strong> damped</li></ul>
+<pre><code class="text">inputs {&#x27;Qf&#x27;: 2.0, &#x27;m&#x27;: 2.1, &#x27;b&#x27;: 2.2}
+-&gt; 9.21905 N/m   (ran on quality_factor__k.onnx; matches the Python engine)</code></pre>
+<h3 id="quality_factor-m">Quality factor of a damped oscillator — solve for oscillating mass — <code>quality_factor.m</code></h3>
+<div class="math">\[Q_{f} = \frac{\sqrt{k m}}{b}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>Qf</code></td><td>quality factor</td><td><code>1</code></td></tr><tr><td><code>k</code></td><td>spring constant</td><td><code>N/m</code></td></tr><tr><td><code>b</code></td><td>viscous damping coefficient</td><td><code>kg/s</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>quality_factor__m.onnx</code></li><li><strong>Applies when:</strong> damped</li></ul>
+<pre><code class="text">inputs {&#x27;Qf&#x27;: 2.0, &#x27;k&#x27;: 2.1, &#x27;b&#x27;: 2.2}
+-&gt; 9.21905 kg   (ran on quality_factor__m.onnx; matches the Python engine)</code></pre>
+<h3 id="rocket_delta_v-dv">Velocity change of a rocket (Tsiolkovsky) — solve for change in velocity — <code>rocket_delta_v.dv</code></h3>
+<div class="math">\[\Delta v = v_{e} \ln\left(\frac{m_{0}}{m_{f}}\right)\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>ve</code></td><td>exhaust velocity</td><td><code>m/s</code></td></tr><tr><td><code>m0</code></td><td>initial mass</td><td><code>kg</code></td></tr><tr><td><code>mf</code></td><td>final mass</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m/s</code></li><li><strong>File:</strong> <code>rocket_delta_v__dv.onnx</code></li><li><strong>Applies when:</strong> rocket</li></ul>
+<h3 id="rocket_delta_v-m0">Velocity change of a rocket (Tsiolkovsky) — solve for initial mass — <code>rocket_delta_v.m0</code></h3>
+<div class="math">\[\Delta v = v_{e} \ln\left(\frac{m_{0}}{m_{f}}\right)\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>dv</code></td><td>change in velocity</td><td><code>m/s</code></td></tr><tr><td><code>ve</code></td><td>exhaust velocity</td><td><code>m/s</code></td></tr><tr><td><code>mf</code></td><td>final mass</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>rocket_delta_v__m0.onnx</code></li><li><strong>Applies when:</strong> rocket</li></ul>
+<pre><code class="text">inputs {&#x27;dv&#x27;: 2.0, &#x27;ve&#x27;: 2.1, &#x27;mf&#x27;: 2.2}
+-&gt; 5.70212 kg   (ran on rocket_delta_v__m0.onnx; matches the Python engine)</code></pre>
+<h3 id="rocket_delta_v-mf">Velocity change of a rocket (Tsiolkovsky) — solve for final mass — <code>rocket_delta_v.mf</code></h3>
+<div class="math">\[\Delta v = v_{e} \ln\left(\frac{m_{0}}{m_{f}}\right)\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>dv</code></td><td>change in velocity</td><td><code>m/s</code></td></tr><tr><td><code>ve</code></td><td>exhaust velocity</td><td><code>m/s</code></td></tr><tr><td><code>m0</code></td><td>initial mass</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>rocket_delta_v__mf.onnx</code></li><li><strong>Applies when:</strong> rocket</li></ul>
+<pre><code class="text">inputs {&#x27;dv&#x27;: 2.0, &#x27;ve&#x27;: 2.1, &#x27;m0&#x27;: 2.2}
+-&gt; 0.848807 kg   (ran on rocket_delta_v__mf.onnx; matches the Python engine)</code></pre>
+<h3 id="rocket_delta_v-ve">Velocity change of a rocket (Tsiolkovsky) — solve for exhaust velocity — <code>rocket_delta_v.ve</code></h3>
+<div class="math">\[\Delta v = v_{e} \ln\left(\frac{m_{0}}{m_{f}}\right)\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>dv</code></td><td>change in velocity</td><td><code>m/s</code></td></tr><tr><td><code>m0</code></td><td>initial mass</td><td><code>kg</code></td></tr><tr><td><code>mf</code></td><td>final mass</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m/s</code></li><li><strong>File:</strong> <code>rocket_delta_v__ve.onnx</code></li><li><strong>Applies when:</strong> rocket</li></ul>
+<h3 id="rolling_incline_acceleration-Ir">Acceleration of a body rolling without slipping down an incline — solve for moment of inertia about the center — <code>rolling_incline_acceleration.Ir</code></h3>
+<div class="math">\[a = \frac{g \sin\left(\theta\right)}{1 + \frac{I_{r}}{m R^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>a</code></td><td>acceleration of the center of mass along the incline</td><td><code>m/s^2</code></td></tr><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr><tr><td><code>theta</code></td><td>angle of the incline</td><td><code>rad</code></td></tr><tr><td><code>m</code></td><td>mass</td><td><code>kg</code></td></tr><tr><td><code>R</code></td><td>rolling radius</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg*m^2</code></li><li><strong>File:</strong> <code>rolling_incline_acceleration__Ir.onnx</code></li><li><strong>Applies when:</strong> rolling</li></ul>
+<pre><code class="text">inputs {&#x27;a&#x27;: 1.5, &#x27;g&#x27;: 1.6, &#x27;theta&#x27;: 1.7, &#x27;m&#x27;: 1.8, &#x27;R&#x27;: 1.9}
+-&gt; 0.375427 kg*m^2   (ran on rolling_incline_acceleration__Ir.onnx; matches the Python engine)</code></pre>
+<h3 id="rolling_incline_acceleration-R">Acceleration of a body rolling without slipping down an incline — solve for rolling radius — <code>rolling_incline_acceleration.R</code></h3>
+<div class="math">\[a = \frac{g \sin\left(\theta\right)}{1 + \frac{I_{r}}{m R^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>a</code></td><td>acceleration of the center of mass along the incline</td><td><code>m/s^2</code></td></tr><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr><tr><td><code>theta</code></td><td>angle of the incline</td><td><code>rad</code></td></tr><tr><td><code>Ir</code></td><td>moment of inertia about the center</td><td><code>kg*m^2</code></td></tr><tr><td><code>m</code></td><td>mass</td><td><code>kg</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m</code></li><li><strong>File:</strong> <code>rolling_incline_acceleration__R.onnx</code></li><li><strong>Branches:</strong> 2 — take the one that is positive</li><li><strong>Applies when:</strong> rolling</li></ul>
+<pre><code class="text">inputs {&#x27;a&#x27;: 1.5, &#x27;g&#x27;: 1.6, &#x27;theta&#x27;: 1.7, &#x27;Ir&#x27;: 1.8, &#x27;m&#x27;: 1.9}
+-&gt; -4.04936, 4.04936 m   (ran on rolling_incline_acceleration__R.onnx; matches the Python engine)</code></pre>
+<h3 id="rolling_incline_acceleration-a">Acceleration of a body rolling without slipping down an incline — solve for acceleration of the center of mass along the incline — <code>rolling_incline_acceleration.a</code></h3>
+<div class="math">\[a = \frac{g \sin\left(\theta\right)}{1 + \frac{I_{r}}{m R^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr><tr><td><code>theta</code></td><td>angle of the incline</td><td><code>rad</code></td></tr><tr><td><code>Ir</code></td><td>moment of inertia about the center</td><td><code>kg*m^2</code></td></tr><tr><td><code>m</code></td><td>mass</td><td><code>kg</code></td></tr><tr><td><code>R</code></td><td>rolling radius</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m/s^2</code></li><li><strong>File:</strong> <code>rolling_incline_acceleration__a.onnx</code></li><li><strong>Applies when:</strong> rolling</li></ul>
+<pre><code class="text">inputs {&#x27;g&#x27;: 2.0, &#x27;theta&#x27;: 2.1, &#x27;Ir&#x27;: 2.2, &#x27;m&#x27;: 2.3, &#x27;R&#x27;: 2.4}
+-&gt; 1.48055 m/s^2   (ran on rolling_incline_acceleration__a.onnx; matches the Python engine)</code></pre>
+<h3 id="rolling_incline_acceleration-g">Acceleration of a body rolling without slipping down an incline — solve for gravity — <code>rolling_incline_acceleration.g</code></h3>
+<div class="math">\[a = \frac{g \sin\left(\theta\right)}{1 + \frac{I_{r}}{m R^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>a</code></td><td>acceleration of the center of mass along the incline</td><td><code>m/s^2</code></td></tr><tr><td><code>theta</code></td><td>angle of the incline</td><td><code>rad</code></td></tr><tr><td><code>Ir</code></td><td>moment of inertia about the center</td><td><code>kg*m^2</code></td></tr><tr><td><code>m</code></td><td>mass</td><td><code>kg</code></td></tr><tr><td><code>R</code></td><td>rolling radius</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m/s^2</code></li><li><strong>File:</strong> <code>rolling_incline_acceleration__g.onnx</code></li><li><strong>Applies when:</strong> rolling</li></ul>
+<pre><code class="text">inputs {&#x27;a&#x27;: 2.0, &#x27;theta&#x27;: 2.1, &#x27;Ir&#x27;: 2.2, &#x27;m&#x27;: 2.3, &#x27;R&#x27;: 2.4}
+-&gt; 2.70169 m/s^2   (ran on rolling_incline_acceleration__g.onnx; matches the Python engine)</code></pre>
+<h3 id="rolling_incline_acceleration-m">Acceleration of a body rolling without slipping down an incline — solve for mass — <code>rolling_incline_acceleration.m</code></h3>
+<div class="math">\[a = \frac{g \sin\left(\theta\right)}{1 + \frac{I_{r}}{m R^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>a</code></td><td>acceleration of the center of mass along the incline</td><td><code>m/s^2</code></td></tr><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr><tr><td><code>theta</code></td><td>angle of the incline</td><td><code>rad</code></td></tr><tr><td><code>Ir</code></td><td>moment of inertia about the center</td><td><code>kg*m^2</code></td></tr><tr><td><code>R</code></td><td>rolling radius</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>rolling_incline_acceleration__m.onnx</code></li><li><strong>Applies when:</strong> rolling</li></ul>
+<pre><code class="text">inputs {&#x27;a&#x27;: 1.5, &#x27;g&#x27;: 1.6, &#x27;theta&#x27;: 1.7, &#x27;Ir&#x27;: 1.8, &#x27;R&#x27;: 1.9}
+-&gt; 8.63017 kg   (ran on rolling_incline_acceleration__m.onnx; matches the Python engine)</code></pre>
+<h3 id="rolling_incline_acceleration-theta">Acceleration of a body rolling without slipping down an incline — solve for angle of the incline — <code>rolling_incline_acceleration.theta</code></h3>
+<div class="math">\[a = \frac{g \sin\left(\theta\right)}{1 + \frac{I_{r}}{m R^{2}}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>a</code></td><td>acceleration of the center of mass along the incline</td><td><code>m/s^2</code></td></tr><tr><td><code>g</code></td><td>acceleration</td><td><code>m/s^2</code></td></tr><tr><td><code>Ir</code></td><td>moment of inertia about the center</td><td><code>kg*m^2</code></td></tr><tr><td><code>m</code></td><td>mass</td><td><code>kg</code></td></tr><tr><td><code>R</code></td><td>rolling radius</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>rad</code></li><li><strong>File:</strong> <code>rolling_incline_acceleration__theta.onnx</code></li><li><strong>Branches:</strong> 2 — take the one that is positive</li><li><strong>Applies when:</strong> rolling</li></ul>
+<h3 id="torque_free_precession-I1">Body-frame precession rate of a torque-free symmetric body — solve for moment of inertia about a transverse axis — <code>torque_free_precession.I1</code></h3>
+<div class="math">\[\Omega_{p} = \frac{\omega_{3} \left(I_{3} - I_{1}\right)}{I_{1}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>Wp</code></td><td>precession rate seen in the body frame</td><td><code>rad/s</code></td></tr><tr><td><code>w3</code></td><td>spin angular velocity about the symmetry axis</td><td><code>rad/s</code></td></tr><tr><td><code>I3</code></td><td>moment of inertia about the symmetry axis</td><td><code>kg*m^2</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg*m^2</code></li><li><strong>File:</strong> <code>torque_free_precession__I1.onnx</code></li><li><strong>Applies when:</strong> torque_free</li></ul>
+<pre><code class="text">inputs {&#x27;Wp&#x27;: 2.0, &#x27;w3&#x27;: 2.1, &#x27;I3&#x27;: 2.2}
+-&gt; 1.12683 kg*m^2   (ran on torque_free_precession__I1.onnx; matches the Python engine)</code></pre>
+<h3 id="torque_free_precession-I3">Body-frame precession rate of a torque-free symmetric body — solve for moment of inertia about the symmetry axis — <code>torque_free_precession.I3</code></h3>
+<div class="math">\[\Omega_{p} = \frac{\omega_{3} \left(I_{3} - I_{1}\right)}{I_{1}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>Wp</code></td><td>precession rate seen in the body frame</td><td><code>rad/s</code></td></tr><tr><td><code>w3</code></td><td>spin angular velocity about the symmetry axis</td><td><code>rad/s</code></td></tr><tr><td><code>I1</code></td><td>moment of inertia about a transverse axis</td><td><code>kg*m^2</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg*m^2</code></li><li><strong>File:</strong> <code>torque_free_precession__I3.onnx</code></li><li><strong>Applies when:</strong> torque_free</li></ul>
+<pre><code class="text">inputs {&#x27;Wp&#x27;: 2.0, &#x27;w3&#x27;: 2.1, &#x27;I1&#x27;: 2.2}
+-&gt; 4.29524 kg*m^2   (ran on torque_free_precession__I3.onnx; matches the Python engine)</code></pre>
+<h3 id="torque_free_precession-Wp">Body-frame precession rate of a torque-free symmetric body — solve for precession rate seen in the body frame — <code>torque_free_precession.Wp</code></h3>
+<div class="math">\[\Omega_{p} = \frac{\omega_{3} \left(I_{3} - I_{1}\right)}{I_{1}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>w3</code></td><td>spin angular velocity about the symmetry axis</td><td><code>rad/s</code></td></tr><tr><td><code>I1</code></td><td>moment of inertia about a transverse axis</td><td><code>kg*m^2</code></td></tr><tr><td><code>I3</code></td><td>moment of inertia about the symmetry axis</td><td><code>kg*m^2</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>rad/s</code></li><li><strong>File:</strong> <code>torque_free_precession__Wp.onnx</code></li><li><strong>Applies when:</strong> torque_free</li></ul>
+<pre><code class="text">inputs {&#x27;w3&#x27;: 2.0, &#x27;I1&#x27;: 2.1, &#x27;I3&#x27;: 2.2}
+-&gt; 0.0952381 rad/s   (ran on torque_free_precession__Wp.onnx; matches the Python engine)</code></pre>
+<h3 id="torque_free_precession-w3">Body-frame precession rate of a torque-free symmetric body — solve for spin angular velocity about the symmetry axis — <code>torque_free_precession.w3</code></h3>
+<div class="math">\[\Omega_{p} = \frac{\omega_{3} \left(I_{3} - I_{1}\right)}{I_{1}}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>Wp</code></td><td>precession rate seen in the body frame</td><td><code>rad/s</code></td></tr><tr><td><code>I1</code></td><td>moment of inertia about a transverse axis</td><td><code>kg*m^2</code></td></tr><tr><td><code>I3</code></td><td>moment of inertia about the symmetry axis</td><td><code>kg*m^2</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>rad/s</code></li><li><strong>File:</strong> <code>torque_free_precession__w3.onnx</code></li><li><strong>Applies when:</strong> torque_free</li></ul>
+<pre><code class="text">inputs {&#x27;Wp&#x27;: 2.0, &#x27;I1&#x27;: 2.1, &#x27;I3&#x27;: 2.2}
+-&gt; 42 rad/s   (ran on torque_free_precession__w3.onnx; matches the Python engine)</code></pre>
+<h3 id="vis_viva-G">Orbital speed on an elliptical orbit (vis-viva) — solve for constant — <code>vis_viva.G</code></h3>
+<div class="math">\[v = \sqrt{G M \left(\frac{2}{r} - \frac{1}{a}\right)}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>v</code></td><td>orbital speed at distance r</td><td><code>m/s</code></td></tr><tr><td><code>M</code></td><td>mass of the central body</td><td><code>kg</code></td></tr><tr><td><code>r</code></td><td>distance from the center of the central body</td><td><code>m</code></td></tr><tr><td><code>a</code></td><td>semi-major axis</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>N*m^2/kg^2</code></li><li><strong>File:</strong> <code>vis_viva__G.onnx</code></li><li><strong>Applies when:</strong> orbit</li></ul>
+<pre><code class="text">inputs {&#x27;v&#x27;: 2.0, &#x27;M&#x27;: 2.1, &#x27;r&#x27;: 2.2, &#x27;a&#x27;: 2.3}
+-&gt; 4.01587 N*m^2/kg^2   (ran on vis_viva__G.onnx; matches the Python engine)</code></pre>
+<h3 id="vis_viva-M">Orbital speed on an elliptical orbit (vis-viva) — solve for mass of the central body — <code>vis_viva.M</code></h3>
+<div class="math">\[v = \sqrt{G M \left(\frac{2}{r} - \frac{1}{a}\right)}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>v</code></td><td>orbital speed at distance r</td><td><code>m/s</code></td></tr><tr><td><code>G</code></td><td>gravitational constant</td><td><code>N*m^2/kg^2</code></td></tr><tr><td><code>r</code></td><td>distance from the center of the central body</td><td><code>m</code></td></tr><tr><td><code>a</code></td><td>semi-major axis</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>kg</code></li><li><strong>File:</strong> <code>vis_viva__M.onnx</code></li><li><strong>Applies when:</strong> orbit</li></ul>
+<pre><code class="text">inputs {&#x27;v&#x27;: 2.0, &#x27;G&#x27;: 2.1, &#x27;r&#x27;: 2.2, &#x27;a&#x27;: 2.3}
+-&gt; 4.01587 kg   (ran on vis_viva__M.onnx; matches the Python engine)</code></pre>
+<h3 id="vis_viva-a">Orbital speed on an elliptical orbit (vis-viva) — solve for semi-major axis — <code>vis_viva.a</code></h3>
+<div class="math">\[v = \sqrt{G M \left(\frac{2}{r} - \frac{1}{a}\right)}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>v</code></td><td>orbital speed at distance r</td><td><code>m/s</code></td></tr><tr><td><code>G</code></td><td>gravitational constant</td><td><code>N*m^2/kg^2</code></td></tr><tr><td><code>M</code></td><td>mass of the central body</td><td><code>kg</code></td></tr><tr><td><code>r</code></td><td>distance from the center of the central body</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m</code></li><li><strong>File:</strong> <code>vis_viva__a.onnx</code></li><li><strong>Applies when:</strong> orbit</li></ul>
+<pre><code class="text">inputs {&#x27;v&#x27;: 2.0, &#x27;G&#x27;: 2.1, &#x27;M&#x27;: 2.2, &#x27;r&#x27;: 2.3}
+-&gt; 265.65 m   (ran on vis_viva__a.onnx; matches the Python engine)</code></pre>
+<h3 id="vis_viva-r">Orbital speed on an elliptical orbit (vis-viva) — solve for distance from the center of the central body — <code>vis_viva.r</code></h3>
+<div class="math">\[v = \sqrt{G M \left(\frac{2}{r} - \frac{1}{a}\right)}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>v</code></td><td>orbital speed at distance r</td><td><code>m/s</code></td></tr><tr><td><code>G</code></td><td>gravitational constant</td><td><code>N*m^2/kg^2</code></td></tr><tr><td><code>M</code></td><td>mass of the central body</td><td><code>kg</code></td></tr><tr><td><code>a</code></td><td>semi-major axis</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m</code></li><li><strong>File:</strong> <code>vis_viva__r.onnx</code></li><li><strong>Applies when:</strong> orbit</li></ul>
+<pre><code class="text">inputs {&#x27;v&#x27;: 2.0, &#x27;G&#x27;: 2.1, &#x27;M&#x27;: 2.2, &#x27;a&#x27;: 2.3}
+-&gt; 1.53777 m   (ran on vis_viva__r.onnx; matches the Python engine)</code></pre>
+<h3 id="vis_viva-v">Orbital speed on an elliptical orbit (vis-viva) — solve for orbital speed at distance r — <code>vis_viva.v</code></h3>
+<div class="math">\[v = \sqrt{G M \left(\frac{2}{r} - \frac{1}{a}\right)}\]</div>
+<table><thead><tr><th>input</th><th>meaning</th><th>unit</th></tr></thead><tbody><tr><td><code>G</code></td><td>gravitational constant</td><td><code>N*m^2/kg^2</code></td></tr><tr><td><code>M</code></td><td>mass of the central body</td><td><code>kg</code></td></tr><tr><td><code>r</code></td><td>distance from the center of the central body</td><td><code>m</code></td></tr><tr><td><code>a</code></td><td>semi-major axis</td><td><code>m</code></td></tr></tbody></table>
+<ul><li><strong>Output unit:</strong> <code>m/s</code></li><li><strong>File:</strong> <code>vis_viva__v.onnx</code></li><li><strong>Applies when:</strong> orbit</li></ul>
+<pre><code class="text">inputs {&#x27;G&#x27;: 2.0, &#x27;M&#x27;: 2.1, &#x27;r&#x27;: 2.2, &#x27;a&#x27;: 2.3}
+-&gt; 1.41142 m/s   (ran on vis_viva__v.onnx; matches the Python engine)</code></pre></body></html>

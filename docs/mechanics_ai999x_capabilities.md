@@ -93,7 +93,7 @@ result.show()
 ### Angular frequency of a damped oscillator — `damped_angular_frequency`
 
 $$
-wd = \sqrt{- \frac{b^{2}}{4 m^{2}} + \frac{k}{m}}
+\omega_{d} = \sqrt{\frac{k}{m} - \frac{b^{2}}{4 m^{2}}}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -115,7 +115,7 @@ mechanics_ai999x.solve('damped_angular_frequency', k='50 N/m', m='2 kg', b='4 kg
 ```
 
 $$
-\begin{aligned}wd &= \sqrt{- \frac{b^{2}}{4 m^{2}} + \frac{k}{m}} \\ wd &= \frac{\sqrt{- b^{2} + 4 k m}}{2 m} = 4.89898\ \mathrm{rad/s}\end{aligned}
+\begin{aligned}\omega_{d} &= \sqrt{\frac{k}{m} - \frac{b^{2}}{4 m^{2}}} \\ \omega_{d} &= \frac{\sqrt{- b^{2} + 4 k m}}{2 m} = 4.89898\ \mathrm{rad/s}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -133,7 +133,7 @@ $$
 ### Damping ratio — `damping_ratio`
 
 $$
-zeta = \frac{b}{2 \sqrt{k} \sqrt{m}}
+\zeta = \frac{b}{2 \sqrt{k m}}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -155,7 +155,7 @@ mechanics_ai999x.solve('damping_ratio', b='4 kg/s', k='50 N/m', m='2 kg', target
 ```
 
 $$
-\begin{aligned}zeta &= \frac{b}{2 \sqrt{k} \sqrt{m}} \\ zeta &= \frac{b}{2 \sqrt{k} \sqrt{m}} = 0.2\ \mathrm{1}\end{aligned}
+\begin{aligned}\zeta &= \frac{b}{2 \sqrt{k m}} \\ \zeta &= \frac{b}{2 \sqrt{k} \sqrt{m}} = 0.2\ \mathrm{1}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -173,7 +173,7 @@ $$
 ### Quality factor of a damped oscillator — `quality_factor`
 
 $$
-Qf = \frac{\sqrt{k} \sqrt{m}}{b}
+Q_{f} = \frac{\sqrt{k m}}{b}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -195,7 +195,7 @@ mechanics_ai999x.solve('quality_factor', k='50 N/m', m='2 kg', b='4 kg/s', targe
 ```
 
 $$
-\begin{aligned}Qf &= \frac{\sqrt{k} \sqrt{m}}{b} \\ Qf &= \frac{\sqrt{k} \sqrt{m}}{b} = 2.5\ \mathrm{1}\end{aligned}
+\begin{aligned}Q_{f} &= \frac{\sqrt{k m}}{b} \\ Q_{f} &= \frac{\sqrt{k} \sqrt{m}}{b} = 2.5\ \mathrm{1}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -213,7 +213,7 @@ $$
 ### Steady-state amplitude of a driven damped oscillator — `driven_amplitude`
 
 $$
-A = \frac{F0}{\sqrt{b^{2} w^{2} + \left(k - m w^{2}\right)^{2}}}
+A = \frac{F_{0}}{\sqrt{\left(k - m \omega^{2}\right)^{2} + \left(b \omega\right)^{2}}}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -237,7 +237,7 @@ mechanics_ai999x.solve('driven_amplitude', F0='10 N', k='50 N/m', m='2 kg', b='4
 ```
 
 $$
-\begin{aligned}A &= \frac{F0}{\sqrt{b^{2} w^{2} + \left(k - m w^{2}\right)^{2}}} \\ A &= \frac{F0}{\sqrt{b^{2} w^{2} + \left(k - m w^{2}\right)^{2}}} = 0.292603\ \mathrm{m}\end{aligned}
+\begin{aligned}A &= \frac{F_{0}}{\sqrt{\left(k - m \omega^{2}\right)^{2} + \left(b \omega\right)^{2}}} \\ A &= \frac{F_{0}}{\sqrt{b^{2} \omega^{2} + \left(k - m \omega^{2}\right)^{2}}} = 0.292603\ \mathrm{m}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -255,7 +255,7 @@ $$
 ### Amplitude-resonance frequency of a driven damped oscillator — `amplitude_resonance_frequency`
 
 $$
-wr = \sqrt{- \frac{b^{2}}{2 m^{2}} + \frac{k}{m}}
+\omega_{r} = \sqrt{\frac{k}{m} - \frac{b^{2}}{2 m^{2}}}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -277,7 +277,7 @@ mechanics_ai999x.solve('amplitude_resonance_frequency', k='50 N/m', m='2 kg', b=
 ```
 
 $$
-\begin{aligned}wr &= \sqrt{- \frac{b^{2}}{2 m^{2}} + \frac{k}{m}} \\ wr &= \frac{\sqrt{- 2 b^{2} + 4 k m}}{2 m} = 4.79583\ \mathrm{rad/s}\end{aligned}
+\begin{aligned}\omega_{r} &= \sqrt{\frac{k}{m} - \frac{b^{2}}{2 m^{2}}} \\ \omega_{r} &= \frac{\sqrt{- 2 b^{2} + 4 k m}}{2 m} = 4.79583\ \mathrm{rad/s}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -295,7 +295,7 @@ $$
 ### Higher normal-mode frequency of two coupled oscillators — `coupled_fast_mode`
 
 $$
-w2 = \frac{\sqrt{k + 2 kc}}{\sqrt{m}}
+\omega_{2} = \sqrt{\frac{k + 2 k_{c}}{m}}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -317,7 +317,7 @@ mechanics_ai999x.solve('coupled_fast_mode', k='40 N/m', kc='10 N/m', m='2 kg', t
 ```
 
 $$
-\begin{aligned}w2 &= \frac{\sqrt{k + 2 kc}}{\sqrt{m}} \\ w2 &= \frac{\sqrt{k + 2 kc}}{\sqrt{m}} = 5.47723\ \mathrm{rad/s}\end{aligned}
+\begin{aligned}\omega_{2} &= \sqrt{\frac{k + 2 k_{c}}{m}} \\ \omega_{2} &= \frac{\sqrt{k + 2 k_{c}}}{\sqrt{m}} = 5.47723\ \mathrm{rad/s}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -335,7 +335,7 @@ $$
 ### Period of a physical pendulum — `physical_pendulum_period`
 
 $$
-T = \frac{2 \pi \sqrt{Ir}}{\sqrt{d} \sqrt{g} \sqrt{m}}
+T = 2 \pi \sqrt{\frac{I_{r}}{m g d}}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -358,7 +358,7 @@ mechanics_ai999x.solve('physical_pendulum_period', Ir='0.5 kg*m^2', m='2 kg', d=
 ```
 
 $$
-\begin{aligned}T &= \frac{2 \pi \sqrt{Ir}}{\sqrt{d} \sqrt{g} \sqrt{m}} \\ T &= \frac{2 \pi \sqrt{Ir}}{\sqrt{d} \sqrt{g} \sqrt{m}} = 1.83159\ \mathrm{s}\end{aligned}
+\begin{aligned}T &= 2 \pi \sqrt{\frac{I_{r}}{m g d}} \\ T &= \frac{2 \pi \sqrt{I_{r}}}{\sqrt{d} \sqrt{g} \sqrt{m}} = 1.83159\ \mathrm{s}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -376,7 +376,7 @@ $$
 ### Lower normal mode of a double pendulum — `double_pendulum_slow_mode`
 
 $$
-w = \frac{\sqrt{g} \sqrt{2 - \sqrt{2}}}{\sqrt{L}}
+\omega = \sqrt{\frac{\left(2 - \sqrt{2}\right) g}{L}}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -397,7 +397,7 @@ mechanics_ai999x.solve('double_pendulum_slow_mode', L='1 m', target='w')
 ```
 
 $$
-\begin{aligned}w &= \frac{\sqrt{g} \sqrt{2 - \sqrt{2}}}{\sqrt{L}} \\ w &= \frac{\sqrt{g} \sqrt{2 - \sqrt{2}}}{\sqrt{L}} = 2.39679\ \mathrm{rad/s}\end{aligned}
+\begin{aligned}\omega &= \sqrt{\frac{\left(2 - \sqrt{2}\right) g}{L}} \\ \omega &= \frac{\sqrt{g} \sqrt{2 - \sqrt{2}}}{\sqrt{L}} = 2.39679\ \mathrm{rad/s}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -415,7 +415,7 @@ $$
 ### Higher normal mode of a double pendulum — `double_pendulum_fast_mode`
 
 $$
-w = \frac{\sqrt{g} \sqrt{\sqrt{2} + 2}}{\sqrt{L}}
+\omega = \sqrt{\frac{\left(2 + \sqrt{2}\right) g}{L}}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -436,7 +436,7 @@ mechanics_ai999x.solve('double_pendulum_fast_mode', L='1 m', target='w')
 ```
 
 $$
-\begin{aligned}w &= \frac{\sqrt{g} \sqrt{\sqrt{2} + 2}}{\sqrt{L}} \\ w &= \frac{\sqrt{g} \sqrt{\sqrt{2} + 2}}{\sqrt{L}} = 5.78636\ \mathrm{rad/s}\end{aligned}
+\begin{aligned}\omega &= \sqrt{\frac{\left(2 + \sqrt{2}\right) g}{L}} \\ \omega &= \frac{\sqrt{g} \sqrt{\sqrt{2} + 2}}{\sqrt{L}} = 5.78636\ \mathrm{rad/s}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -454,7 +454,7 @@ $$
 ### Orbital speed on an elliptical orbit (vis-viva) — `vis_viva`
 
 $$
-v = \sqrt{G} \sqrt{M} \sqrt{\frac{2}{r} - \frac{1}{a}}
+v = \sqrt{G M \left(\frac{2}{r} - \frac{1}{a}\right)}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -477,7 +477,7 @@ mechanics_ai999x.solve('vis_viva', M='5.972e+24 kg', r='7e+06 m', a='8e+06 m', t
 ```
 
 $$
-\begin{aligned}v &= \sqrt{G} \sqrt{M} \sqrt{\frac{2}{r} - \frac{1}{a}} \\ v &= \frac{\sqrt{G} \sqrt{M} \sqrt{2 a - r}}{\sqrt{a} \sqrt{r}} = 8003.69\ \mathrm{m/s}\end{aligned}
+\begin{aligned}v &= \sqrt{G M \left(\frac{2}{r} - \frac{1}{a}\right)} \\ v &= \frac{\sqrt{G} \sqrt{M} \sqrt{2 a - r}}{\sqrt{a} \sqrt{r}} = 8003.69\ \mathrm{m/s}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -495,7 +495,7 @@ $$
 ### Escape speed — `escape_speed`
 
 $$
-v = \frac{\sqrt{2} \sqrt{G} \sqrt{M}}{\sqrt{r}}
+v = \sqrt{\frac{2 G M}{r}}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -517,7 +517,7 @@ mechanics_ai999x.solve('escape_speed', M='5.972e+24 kg', r='6.371e+06 m', target
 ```
 
 $$
-\begin{aligned}v &= \frac{\sqrt{2} \sqrt{G} \sqrt{M}}{\sqrt{r}} \\ v &= \frac{\sqrt{2} \sqrt{G} \sqrt{M}}{\sqrt{r}} = 11186\ \mathrm{m/s}\end{aligned}
+\begin{aligned}v &= \sqrt{\frac{2 G M}{r}} \\ v &= \frac{\sqrt{2} \sqrt{G} \sqrt{M}}{\sqrt{r}} = 11186\ \mathrm{m/s}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -535,7 +535,7 @@ $$
 ### Orbital period from the semi-major axis (Kepler's third law) — `kepler_period_semi_major`
 
 $$
-T = \frac{2 \pi a^{\frac{3}{2}}}{\sqrt{G} \sqrt{M}}
+T = 2 \pi \sqrt{\frac{a^{3}}{G M}}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -557,7 +557,7 @@ mechanics_ai999x.solve('kepler_period_semi_major', a='1.496e+11 m', M='1.989e+30
 ```
 
 $$
-\begin{aligned}T &= \frac{2 \pi a^{\frac{3}{2}}}{\sqrt{G} \sqrt{M}} \\ T &= \frac{2 \pi a^{\frac{3}{2}}}{\sqrt{G} \sqrt{M}} = 3.15542e+07\ \mathrm{s}\end{aligned}
+\begin{aligned}T &= 2 \pi \sqrt{\frac{a^{3}}{G M}} \\ T &= \frac{2 \pi a^{\frac{3}{2}}}{\sqrt{G} \sqrt{M}} = 3.15542e+07\ \mathrm{s}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -575,7 +575,7 @@ $$
 ### Moment of inertia of a solid sphere — `inertia_solid_sphere`
 
 $$
-Ir = \frac{2 R^{2} m}{5}
+I_{r} = \frac{2 m R^{2}}{5}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -596,7 +596,7 @@ mechanics_ai999x.solve('inertia_solid_sphere', m='2 kg', R='0.5 m', target='Ir')
 ```
 
 $$
-\begin{aligned}Ir &= \frac{2 R^{2} m}{5} \\ Ir &= \frac{2 R^{2} m}{5} = 0.2\ \mathrm{kg\,m^2}\end{aligned}
+\begin{aligned}I_{r} &= \frac{2 m R^{2}}{5} \\ I_{r} &= \frac{2 R^{2} m}{5} = 0.2\ \mathrm{kg\,m^2}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -614,7 +614,7 @@ $$
 ### Moment of inertia of a thin spherical shell — `inertia_hollow_sphere`
 
 $$
-Ir = \frac{2 R^{2} m}{3}
+I_{r} = \frac{2 m R^{2}}{3}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -635,7 +635,7 @@ mechanics_ai999x.solve('inertia_hollow_sphere', m='2 kg', R='0.5 m', target='Ir'
 ```
 
 $$
-\begin{aligned}Ir &= \frac{2 R^{2} m}{3} \\ Ir &= \frac{2 R^{2} m}{3} = 0.333333\ \mathrm{kg\,m^2}\end{aligned}
+\begin{aligned}I_{r} &= \frac{2 m R^{2}}{3} \\ I_{r} &= \frac{2 R^{2} m}{3} = 0.333333\ \mathrm{kg\,m^2}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -653,7 +653,7 @@ $$
 ### Moment of inertia of a solid disk about its axis — `inertia_solid_disk`
 
 $$
-Ir = \frac{R^{2} m}{2}
+I_{r} = \frac{m R^{2}}{2}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -674,7 +674,7 @@ mechanics_ai999x.solve('inertia_solid_disk', m='2 kg', R='0.5 m', target='Ir')
 ```
 
 $$
-\begin{aligned}Ir &= \frac{R^{2} m}{2} \\ Ir &= \frac{R^{2} m}{2} = 0.25\ \mathrm{kg\,m^2}\end{aligned}
+\begin{aligned}I_{r} &= \frac{m R^{2}}{2} \\ I_{r} &= \frac{R^{2} m}{2} = 0.25\ \mathrm{kg\,m^2}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -692,7 +692,7 @@ $$
 ### Moment of inertia of a thin rod about its center — `inertia_rod_center`
 
 $$
-Ir = \frac{Lr^{2} m}{12}
+I_{r} = \frac{m L_{r}^{2}}{12}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -713,7 +713,7 @@ mechanics_ai999x.solve('inertia_rod_center', m='3 kg', Lr='2 m', target='Ir')
 ```
 
 $$
-\begin{aligned}Ir &= \frac{Lr^{2} m}{12} \\ Ir &= \frac{Lr^{2} m}{12} = 1\ \mathrm{kg\,m^2}\end{aligned}
+\begin{aligned}I_{r} &= \frac{m L_{r}^{2}}{12} \\ I_{r} &= \frac{L_{r}^{2} m}{12} = 1\ \mathrm{kg\,m^2}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -731,7 +731,7 @@ $$
 ### Moment of inertia of a thin rod about one end — `inertia_rod_end`
 
 $$
-Ir = \frac{Lr^{2} m}{3}
+I_{r} = \frac{m L_{r}^{2}}{3}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -752,7 +752,7 @@ mechanics_ai999x.solve('inertia_rod_end', m='3 kg', Lr='2 m', target='Ir')
 ```
 
 $$
-\begin{aligned}Ir &= \frac{Lr^{2} m}{3} \\ Ir &= \frac{Lr^{2} m}{3} = 4\ \mathrm{kg\,m^2}\end{aligned}
+\begin{aligned}I_{r} &= \frac{m L_{r}^{2}}{3} \\ I_{r} &= \frac{L_{r}^{2} m}{3} = 4\ \mathrm{kg\,m^2}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -770,7 +770,7 @@ $$
 ### Acceleration of a body rolling without slipping down an incline — `rolling_incline_acceleration`
 
 $$
-a = \frac{g \sin{\left(theta \right)}}{\frac{Ir}{R^{2} m} + 1}
+a = \frac{g \sin\left(\theta\right)}{1 + \frac{I_{r}}{m R^{2}}}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -794,7 +794,7 @@ mechanics_ai999x.solve('rolling_incline_acceleration', theta='30 deg', Ir='0.04 
 ```
 
 $$
-\begin{aligned}a &= \frac{g \sin{\left(theta \right)}}{\frac{Ir}{R^{2} m} + 1} \\ a &= \frac{R^{2} g m \sin{\left(theta \right)}}{Ir + R^{2} m} = 3.26888\ \mathrm{m/s^2}\end{aligned}
+\begin{aligned}a &= \frac{g \sin\left(\theta\right)}{1 + \frac{I_{r}}{m R^{2}}} \\ a &= \frac{R^{2} g m \sin{\left(\theta \right)}}{I_{r} + R^{2} m} = 3.26888\ \mathrm{m/s^2}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -812,7 +812,7 @@ $$
 ### Acceleration of an Atwood machine with a massive pulley — `atwood_massive_pulley`
 
 $$
-a = \frac{g \left(m1 - m2\right)}{\frac{Ir}{R^{2}} + m1 + m2}
+a = \frac{\left(m_{1} - m_{2}\right) g}{m_{1} + m_{2} + \frac{I_{r}}{R^{2}}}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -836,7 +836,7 @@ mechanics_ai999x.solve('atwood_massive_pulley', m1='3 kg', m2='2 kg', Ir='0.02 k
 ```
 
 $$
-\begin{aligned}a &= \frac{g \left(m1 - m2\right)}{\frac{Ir}{R^{2}} + m1 + m2} \\ a &= \frac{R^{2} g \left(m1 - m2\right)}{Ir + R^{2} m1 + R^{2} m2} = 1.40095\ \mathrm{m/s^2}\end{aligned}
+\begin{aligned}a &= \frac{\left(m_{1} - m_{2}\right) g}{m_{1} + m_{2} + \frac{I_{r}}{R^{2}}} \\ a &= \frac{R^{2} g \left(m_{1} - m_{2}\right)}{I_{r} + R^{2} m_{1} + R^{2} m_{2}} = 1.40095\ \mathrm{m/s^2}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -854,7 +854,7 @@ $$
 ### Body-frame precession rate of a torque-free symmetric body — `torque_free_precession`
 
 $$
-Wp = \frac{w3 \left(- I1 + I3\right)}{I1}
+\Omega_{p} = \frac{\omega_{3} \left(I_{3} - I_{1}\right)}{I_{1}}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -876,7 +876,7 @@ mechanics_ai999x.solve('torque_free_precession', w3='10 rad/s', I1='2 kg*m^2', I
 ```
 
 $$
-\begin{aligned}Wp &= \frac{w3 \left(- I1 + I3\right)}{I1} \\ Wp &= \frac{w3 \left(- I1 + I3\right)}{I1} = 5\ \mathrm{rad/s}\end{aligned}
+\begin{aligned}\Omega_{p} &= \frac{\omega_{3} \left(I_{3} - I_{1}\right)}{I_{1}} \\ \Omega_{p} &= \frac{\omega_{3} \left(- I_{1} + I_{3}\right)}{I_{1}} = 5\ \mathrm{rad/s}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -894,7 +894,7 @@ $$
 ### Precession period of a Foucault pendulum — `foucault_precession_period`
 
 $$
-T = \frac{2 \pi}{W \sin{\left(phi \right)}}
+T = \frac{2 \pi}{\Omega \sin\left(\phi\right)}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -915,7 +915,7 @@ mechanics_ai999x.solve('foucault_precession_period', phi='48.85 deg', target='T'
 ```
 
 $$
-\begin{aligned}T &= \frac{2 \pi}{W \sin{\left(phi \right)}} \\ T &= \frac{2 \pi}{W \sin{\left(phi \right)}} = 114429\ \mathrm{s}\end{aligned}
+\begin{aligned}T &= \frac{2 \pi}{\Omega \sin\left(\phi\right)} \\ T &= \frac{2 \pi}{\Omega \sin{\left(\phi \right)}} = 114429\ \mathrm{s}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -933,7 +933,7 @@ $$
 ### Off-axis equilibrium of a bead on a rotating hoop — `bead_hoop_equilibrium`
 
 $$
-theta = \operatorname{acos}{\left(\frac{g}{R w^{2}} \right)}
+\theta = \arccos\left(\frac{g}{\omega^{2} R}\right)
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -955,7 +955,7 @@ mechanics_ai999x.solve('bead_hoop_equilibrium', w='10 rad/s', R='0.2 m', target=
 ```
 
 $$
-\begin{aligned}theta &= \operatorname{acos}{\left(\frac{g}{R w^{2}} \right)} \\ theta &= \operatorname{acos}{\left(\frac{g}{R w^{2}} \right)} = 1.05833\ \mathrm{rad}\end{aligned}
+\begin{aligned}\theta &= \arccos\left(\frac{g}{\omega^{2} R}\right) \\ \theta &= \operatorname{acos}{\left(\frac{g}{R \omega^{2}} \right)} = 1.05833\ \mathrm{rad}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -973,7 +973,7 @@ $$
 ### Final velocity of the first body in a one-dimensional elastic collision — `elastic_collision_first_final`
 
 $$
-v1f = \frac{2 m2 v2 + v1 \left(m1 - m2\right)}{m1 + m2}
+v_{1f} = \frac{\left(m_{1} - m_{2}\right) v_{1} + 2 m_{2} v_{2}}{m_{1} + m_{2}}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -996,7 +996,7 @@ mechanics_ai999x.solve('elastic_collision_first_final', m1='2 kg', m2='1 kg', v1
 ```
 
 $$
-\begin{aligned}v1f &= \frac{2 m2 v2 + v1 \left(m1 - m2\right)}{m1 + m2} \\ v1f &= \frac{m1 v1 - m2 v1 + 2 m2 v2}{m1 + m2} = 1\ \mathrm{m/s}\end{aligned}
+\begin{aligned}v_{1f} &= \frac{\left(m_{1} - m_{2}\right) v_{1} + 2 m_{2} v_{2}}{m_{1} + m_{2}} \\ v_{1f} &= \frac{m_{1} v_{1} - m_{2} v_{1} + 2 m_{2} v_{2}}{m_{1} + m_{2}} = 1\ \mathrm{m/s}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -1014,7 +1014,7 @@ $$
 ### Final velocity of the second body in a one-dimensional elastic collision — `elastic_collision_second_final`
 
 $$
-v2f = \frac{2 m1 v1 + v2 \left(- m1 + m2\right)}{m1 + m2}
+v_{2f} = \frac{\left(m_{2} - m_{1}\right) v_{2} + 2 m_{1} v_{1}}{m_{1} + m_{2}}
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -1037,7 +1037,7 @@ mechanics_ai999x.solve('elastic_collision_second_final', m1='2 kg', m2='1 kg', v
 ```
 
 $$
-\begin{aligned}v2f &= \frac{2 m1 v1 + v2 \left(- m1 + m2\right)}{m1 + m2} \\ v2f &= \frac{2 m1 v1 - m1 v2 + m2 v2}{m1 + m2} = 4\ \mathrm{m/s}\end{aligned}
+\begin{aligned}v_{2f} &= \frac{\left(m_{2} - m_{1}\right) v_{2} + 2 m_{1} v_{1}}{m_{1} + m_{2}} \\ v_{2f} &= \frac{2 m_{1} v_{1} - m_{1} v_{2} + m_{2} v_{2}}{m_{1} + m_{2}} = 4\ \mathrm{m/s}\end{aligned}
 $$
 
 | invalid call | outcome | message |
@@ -1055,7 +1055,7 @@ $$
 ### Velocity change of a rocket (Tsiolkovsky) — `rocket_delta_v`
 
 $$
-dv = ve \log{\left(\frac{m0}{mf} \right)}
+\Delta v = v_{e} \ln\left(\frac{m_{0}}{m_{f}}\right)
 $$
 
 | input | meaning | kind / role | unit | default |
@@ -1077,7 +1077,7 @@ mechanics_ai999x.solve('rocket_delta_v', ve='3000 m/s', m0='1000 kg', mf='400 kg
 ```
 
 $$
-\begin{aligned}dv &= ve \log{\left(\frac{m0}{mf} \right)} \\ dv &= \log{\left(\left(\frac{m0}{mf}\right)^{ve} \right)} = 2748.87\ \mathrm{m/s}\end{aligned}
+\begin{aligned}\Delta v &= v_{e} \ln\left(\frac{m_{0}}{m_{f}}\right) \\ \Delta v &= \ln{\left(\left(\frac{m_{0}}{m_{f}}\right)^{v_{e}} \right)} = 2748.87\ \mathrm{m/s}\end{aligned}
 $$
 
 | invalid call | outcome | message |

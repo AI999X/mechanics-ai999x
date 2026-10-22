@@ -4,7 +4,7 @@
 
 **[Install](https://pypi.org/project/mechanics-ai999x/)** · **[Capability guide](https://huggingface.co/AI999X/mechanics-ai999x/tree/main/docs)** · **[Evaluation](https://huggingface.co/AI999X/mechanics-ai999x/tree/main/evaluation)** · **[AI999X on Hugging Face](https://huggingface.co/AI999X)** · **[Website](https://ai999x.com)** · **[Support: Buy Me a Coffee](https://buymeacoffee.com/ibnuljaiffarabi)**
 
-License: Apache-2.0 · Author: Ibnul Jaif Farabi (creator and engineer) · Organization: AI999X · Version 1.0.1
+License: Apache-2.0 · Author: Ibnul Jaif Farabi (creator and engineer) · Organization: AI999X · Version 2.0.0
 
 mechanics-ai999x is an offline, deterministic Python solver that answers classical mechanics questions with verified results from 25 certified capabilities, gives 234 documented answers identically on Windows and Linux, and refuses rather than guesses when an answer cannot be verified.
 
@@ -25,7 +25,7 @@ mechanics-ai999x is an offline, deterministic Python solver that answers classic
 
 | Property | Value |
 |---|---|
-| Package | `mechanics-ai999x` 1.0.1 (import `mechanics_ai999x`) |
+| Package | `mechanics-ai999x` 2.0.0 (import `mechanics_ai999x`) |
 | Type | Deterministic neuro-symbolic classical mechanics engine (rule-based reading + certified symbolic capabilities) |
 | Capabilities | 25 certified relations |
 | Knowledge pack | version 0.1.0 |
@@ -59,7 +59,28 @@ mechanics.ask("Who created you?").message
 # -> mechanics-ai999x was created and engineered by Ibnul Jaif Farabi at AI999X.
 ```
 
-Command line: `mechanics-ai999x "<question>"`, `mechanics-ai999x --capabilities`. The outputs above were produced by running this exact code on mechanics-ai999x 1.0.1.
+Command line: `mechanics-ai999x "<question>"`, `mechanics-ai999x --capabilities`. The outputs above were produced by running this exact code on mechanics-ai999x 2.0.0.
+
+## Find the right capability, and draw it
+
+`mechanics.search()` finds which certified capability a question is about — across **every** AI999X model, so a question for another model points you to it. It runs the AI999X capability encoder (a 4.9 MB ONNX model, offline): `pip install "mechanics-ai999x[search]"`. `ask(question, suggest=True)` adds the same pointers to a question it does not answer; an answer itself never changes.
+
+```python
+import mechanics_ai999x as mechanics
+
+mechanics.search("A rocket burns its fuel; how much does its speed change?", k=2)
+# -> Velocity change of a rocket (Tsiolkovsky) (mechanics-ai999x, 0.67); Speed after a displacement under constant acceleration (physics-ai999x, 0.43)
+mechanics.search("Solve x^2 - 5x + 6 = 0", k=2)
+# -> Roots of a quadratic equation (algebra-ai999x, 0.67); Solution of two linear equations in two unknowns (algebra-ai999x, 0.57)
+```
+
+`mechanics.plot(answer)` draws the answer's formula around its own result — the engine's numbers, as SVG (Jupyter shows it directly; `.figure()` gives a matplotlib figure with the `[plot]` extra, `.plotly()` a Plotly figure).
+
+```python
+a = mechanics.ask("A 2 kg mass on a spring with a spring constant of 50 N/m has a damping coefficient of 4 kg/s. What is the damped angular frequency?")
+mechanics.plot(a)
+# -> Angular frequency of a damped oscillator: wd against k, 99 points, marked at 4.899 rad/s
+```
 
 ## How every answer is verified
 
@@ -93,10 +114,10 @@ Capabilities are certified before they ship: each must reproduce hand-worked ref
 ## Citation
 
 ```bibtex
-@software{mechanics_ai999x_1_0_1,
+@software{mechanics_ai999x_2_0_0,
   title  = {mechanics-ai999x: an offline, verified classical mechanics solver},
   author = {Farabi, Ibnul Jaif}, organization = {AI999X},
-  year   = {2026}, version = {1.0.1},
+  year   = {2026}, version = {2.0.0},
   url    = {https://huggingface.co/AI999X/mechanics-ai999x}
 }
 ```

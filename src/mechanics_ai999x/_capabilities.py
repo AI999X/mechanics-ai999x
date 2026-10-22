@@ -32,7 +32,7 @@ def help(name: CapabilityId | str | None = None) -> str:     # noqa: A001 (the p
 
 def amplitude_resonance_frequency(wr=None, k=None, m=None, b=None, *, target: str | None = None):
     """Amplitude-resonance frequency of a driven damped oscillator: wr = sqrt(k/m - b**2/(2*m**2))
-    Formula: wr = \\sqrt{- \\frac{b^{2}}{2 m^{2}} + \\frac{k}{m}}
+    Formula: \\omega_{r} = \\sqrt{\\frac{k}{m} - \\frac{b^{2}}{2 m^{2}}}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         wr: driving frequency of maximum amplitude [rad/s]
@@ -47,7 +47,7 @@ def amplitude_resonance_frequency(wr=None, k=None, m=None, b=None, *, target: st
 
 def atwood_massive_pulley(a=None, m1=None, m2=None, g=None, Ir=None, R=None, *, target: str | None = None):
     """Acceleration of an Atwood machine with a massive pulley: a = (m1 - m2)*g/(m1 + m2 + Ir/R**2)
-    Formula: a = \\frac{g \\left(m1 - m2\\right)}{\\frac{Ir}{R^{2}} + m1 + m2}
+    Formula: a = \\frac{\\left(m_{1} - m_{2}\\right) g}{m_{1} + m_{2} + \\frac{I_{r}}{R^{2}}}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         a: acceleration of each mass [m/s^2]
@@ -64,7 +64,7 @@ def atwood_massive_pulley(a=None, m1=None, m2=None, g=None, Ir=None, R=None, *, 
 
 def bead_hoop_equilibrium(theta=None, g=None, w=None, R=None, *, target: str | None = None):
     """Off-axis equilibrium of a bead on a rotating hoop: theta = acos(g/(w**2*R))
-    Formula: theta = \\operatorname{acos}{\\left(\\frac{g}{R w^{2}} \\right)}
+    Formula: \\theta = \\arccos\\left(\\frac{g}{\\omega^{2} R}\\right)
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         theta: equilibrium angle from the bottom [rad]
@@ -79,7 +79,7 @@ def bead_hoop_equilibrium(theta=None, g=None, w=None, R=None, *, target: str | N
 
 def coupled_fast_mode(w2=None, k=None, kc=None, m=None, *, target: str | None = None):
     """Higher normal-mode frequency of two coupled oscillators: w2 = sqrt((k + 2*kc)/m)
-    Formula: w2 = \\frac{\\sqrt{k + 2 kc}}{\\sqrt{m}}
+    Formula: \\omega_{2} = \\sqrt{\\frac{k + 2 k_{c}}{m}}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         w2: higher normal-mode angular frequency [rad/s]
@@ -94,7 +94,7 @@ def coupled_fast_mode(w2=None, k=None, kc=None, m=None, *, target: str | None = 
 
 def damped_angular_frequency(wd=None, k=None, m=None, b=None, *, target: str | None = None):
     """Angular frequency of a damped oscillator: wd = sqrt(k/m - b**2/(4*m**2))
-    Formula: wd = \\sqrt{- \\frac{b^{2}}{4 m^{2}} + \\frac{k}{m}}
+    Formula: \\omega_{d} = \\sqrt{\\frac{k}{m} - \\frac{b^{2}}{4 m^{2}}}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         wd: angular frequency of the damped oscillation [rad/s]
@@ -109,7 +109,7 @@ def damped_angular_frequency(wd=None, k=None, m=None, b=None, *, target: str | N
 
 def damping_ratio(zeta=None, b=None, k=None, m=None, *, target: str | None = None):
     """Damping ratio: zeta = b/(2*sqrt(k*m))
-    Formula: zeta = \\frac{b}{2 \\sqrt{k} \\sqrt{m}}
+    Formula: \\zeta = \\frac{b}{2 \\sqrt{k m}}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         zeta: damping ratio [1]
@@ -124,7 +124,7 @@ def damping_ratio(zeta=None, b=None, k=None, m=None, *, target: str | None = Non
 
 def double_pendulum_fast_mode(w=None, g=None, L=None, *, target: str | None = None):
     """Higher normal mode of a double pendulum: w = sqrt((2 + sqrt(2))*g/L)
-    Formula: w = \\frac{\\sqrt{g} \\sqrt{\\sqrt{2} + 2}}{\\sqrt{L}}
+    Formula: \\omega = \\sqrt{\\frac{\\left(2 + \\sqrt{2}\\right) g}{L}}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         w: higher normal-mode angular frequency [rad/s]
@@ -138,7 +138,7 @@ def double_pendulum_fast_mode(w=None, g=None, L=None, *, target: str | None = No
 
 def double_pendulum_slow_mode(w=None, g=None, L=None, *, target: str | None = None):
     """Lower normal mode of a double pendulum: w = sqrt((2 - sqrt(2))*g/L)
-    Formula: w = \\frac{\\sqrt{g} \\sqrt{2 - \\sqrt{2}}}{\\sqrt{L}}
+    Formula: \\omega = \\sqrt{\\frac{\\left(2 - \\sqrt{2}\\right) g}{L}}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         w: lower normal-mode angular frequency [rad/s]
@@ -152,7 +152,7 @@ def double_pendulum_slow_mode(w=None, g=None, L=None, *, target: str | None = No
 
 def driven_amplitude(A=None, F0=None, k=None, m=None, b=None, w=None, *, target: str | None = None):
     """Steady-state amplitude of a driven damped oscillator: A = F0/sqrt((k - m*w**2)**2 + (b*w)**2)
-    Formula: A = \\frac{F0}{\\sqrt{b^{2} w^{2} + \\left(k - m w^{2}\\right)^{2}}}
+    Formula: A = \\frac{F_{0}}{\\sqrt{\\left(k - m \\omega^{2}\\right)^{2} + \\left(b \\omega\\right)^{2}}}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         A: steady-state amplitude [m]
@@ -169,7 +169,7 @@ def driven_amplitude(A=None, F0=None, k=None, m=None, b=None, w=None, *, target:
 
 def elastic_collision_first_final(v1f=None, m1=None, m2=None, v1=None, v2=None, *, target: str | None = None):
     """Final velocity of the first body in a one-dimensional elastic collision: v1f = ((m1 - m2)*v1 + 2*m2*v2)/(m1 + m2)
-    Formula: v1f = \\frac{2 m2 v2 + v1 \\left(m1 - m2\\right)}{m1 + m2}
+    Formula: v_{1f} = \\frac{\\left(m_{1} - m_{2}\\right) v_{1} + 2 m_{2} v_{2}}{m_{1} + m_{2}}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         v1f: final velocity of the first body [m/s]
@@ -185,7 +185,7 @@ def elastic_collision_first_final(v1f=None, m1=None, m2=None, v1=None, v2=None, 
 
 def elastic_collision_second_final(v2f=None, m1=None, m2=None, v1=None, v2=None, *, target: str | None = None):
     """Final velocity of the second body in a one-dimensional elastic collision: v2f = ((m2 - m1)*v2 + 2*m1*v1)/(m1 + m2)
-    Formula: v2f = \\frac{2 m1 v1 + v2 \\left(- m1 + m2\\right)}{m1 + m2}
+    Formula: v_{2f} = \\frac{\\left(m_{2} - m_{1}\\right) v_{2} + 2 m_{1} v_{1}}{m_{1} + m_{2}}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         v2f: final velocity of the second body [m/s]
@@ -201,7 +201,7 @@ def elastic_collision_second_final(v2f=None, m1=None, m2=None, v1=None, v2=None,
 
 def escape_speed(v=None, G=None, M=None, r=None, *, target: str | None = None):
     """Escape speed: v = sqrt(2*G*M/r)
-    Formula: v = \\frac{\\sqrt{2} \\sqrt{G} \\sqrt{M}}{\\sqrt{r}}
+    Formula: v = \\sqrt{\\frac{2 G M}{r}}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         v: escape speed [m/s]
@@ -216,7 +216,7 @@ def escape_speed(v=None, G=None, M=None, r=None, *, target: str | None = None):
 
 def foucault_precession_period(T=None, W=None, phi=None, *, target: str | None = None):
     """Precession period of a Foucault pendulum: T = 2*pi/(W*sin(phi))
-    Formula: T = \\frac{2 \\pi}{W \\sin{\\left(phi \\right)}}
+    Formula: T = \\frac{2 \\pi}{\\Omega \\sin\\left(\\phi\\right)}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         T: time for the swing plane to turn once [s]
@@ -230,7 +230,7 @@ def foucault_precession_period(T=None, W=None, phi=None, *, target: str | None =
 
 def inertia_hollow_sphere(Ir=None, m=None, R=None, *, target: str | None = None):
     """Moment of inertia of a thin spherical shell: Ir = 2*m*R**2/3
-    Formula: Ir = \\frac{2 R^{2} m}{3}
+    Formula: I_{r} = \\frac{2 m R^{2}}{3}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         Ir: moment of inertia about the central axis [kg*m^2]
@@ -244,7 +244,7 @@ def inertia_hollow_sphere(Ir=None, m=None, R=None, *, target: str | None = None)
 
 def inertia_rod_center(Ir=None, m=None, Lr=None, *, target: str | None = None):
     """Moment of inertia of a thin rod about its center: Ir = m*Lr**2/12
-    Formula: Ir = \\frac{Lr^{2} m}{12}
+    Formula: I_{r} = \\frac{m L_{r}^{2}}{12}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         Ir: moment of inertia about its center [kg*m^2]
@@ -258,7 +258,7 @@ def inertia_rod_center(Ir=None, m=None, Lr=None, *, target: str | None = None):
 
 def inertia_rod_end(Ir=None, m=None, Lr=None, *, target: str | None = None):
     """Moment of inertia of a thin rod about one end: Ir = m*Lr**2/3
-    Formula: Ir = \\frac{Lr^{2} m}{3}
+    Formula: I_{r} = \\frac{m L_{r}^{2}}{3}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         Ir: moment of inertia about one end [kg*m^2]
@@ -272,7 +272,7 @@ def inertia_rod_end(Ir=None, m=None, Lr=None, *, target: str | None = None):
 
 def inertia_solid_disk(Ir=None, m=None, R=None, *, target: str | None = None):
     """Moment of inertia of a solid disk about its axis: Ir = m*R**2/2
-    Formula: Ir = \\frac{R^{2} m}{2}
+    Formula: I_{r} = \\frac{m R^{2}}{2}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         Ir: moment of inertia about the central axis [kg*m^2]
@@ -286,7 +286,7 @@ def inertia_solid_disk(Ir=None, m=None, R=None, *, target: str | None = None):
 
 def inertia_solid_sphere(Ir=None, m=None, R=None, *, target: str | None = None):
     """Moment of inertia of a solid sphere: Ir = 2*m*R**2/5
-    Formula: Ir = \\frac{2 R^{2} m}{5}
+    Formula: I_{r} = \\frac{2 m R^{2}}{5}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         Ir: moment of inertia about the central axis [kg*m^2]
@@ -300,7 +300,7 @@ def inertia_solid_sphere(Ir=None, m=None, R=None, *, target: str | None = None):
 
 def kepler_period_semi_major(T=None, a=None, G=None, M=None, *, target: str | None = None):
     """Orbital period from the semi-major axis (Kepler's third law): T = 2*pi*sqrt(a**3/(G*M))
-    Formula: T = \\frac{2 \\pi a^{\\frac{3}{2}}}{\\sqrt{G} \\sqrt{M}}
+    Formula: T = 2 \\pi \\sqrt{\\frac{a^{3}}{G M}}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         T: orbital period [s]
@@ -315,7 +315,7 @@ def kepler_period_semi_major(T=None, a=None, G=None, M=None, *, target: str | No
 
 def physical_pendulum_period(T=None, Ir=None, m=None, g=None, d=None, *, target: str | None = None):
     """Period of a physical pendulum: T = 2*pi*sqrt(Ir/(m*g*d))
-    Formula: T = \\frac{2 \\pi \\sqrt{Ir}}{\\sqrt{d} \\sqrt{g} \\sqrt{m}}
+    Formula: T = 2 \\pi \\sqrt{\\frac{I_{r}}{m g d}}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         T: small-oscillation period [s]
@@ -331,7 +331,7 @@ def physical_pendulum_period(T=None, Ir=None, m=None, g=None, d=None, *, target:
 
 def quality_factor(Qf=None, k=None, m=None, b=None, *, target: str | None = None):
     """Quality factor of a damped oscillator: Qf = sqrt(k*m)/b
-    Formula: Qf = \\frac{\\sqrt{k} \\sqrt{m}}{b}
+    Formula: Q_{f} = \\frac{\\sqrt{k m}}{b}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         Qf: quality factor [1]
@@ -346,7 +346,7 @@ def quality_factor(Qf=None, k=None, m=None, b=None, *, target: str | None = None
 
 def rocket_delta_v(dv=None, ve=None, m0=None, mf=None, *, target: str | None = None):
     """Velocity change of a rocket (Tsiolkovsky): dv = ve*log(m0/mf)
-    Formula: dv = ve \\log{\\left(\\frac{m0}{mf} \\right)}
+    Formula: \\Delta v = v_{e} \\ln\\left(\\frac{m_{0}}{m_{f}}\\right)
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         dv: change in velocity [m/s]
@@ -361,7 +361,7 @@ def rocket_delta_v(dv=None, ve=None, m0=None, mf=None, *, target: str | None = N
 
 def rolling_incline_acceleration(a=None, g=None, theta=None, Ir=None, m=None, R=None, *, target: str | None = None):
     """Acceleration of a body rolling without slipping down an incline: a = g*sin(theta)/(1 + Ir/(m*R**2))
-    Formula: a = \\frac{g \\sin{\\left(theta \\right)}}{\\frac{Ir}{R^{2} m} + 1}
+    Formula: a = \\frac{g \\sin\\left(\\theta\\right)}{1 + \\frac{I_{r}}{m R^{2}}}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         a: acceleration of the center of mass along the incline [m/s^2]
@@ -378,7 +378,7 @@ def rolling_incline_acceleration(a=None, g=None, theta=None, Ir=None, m=None, R=
 
 def torque_free_precession(Wp=None, w3=None, I1=None, I3=None, *, target: str | None = None):
     """Body-frame precession rate of a torque-free symmetric body: Wp = w3*(I3 - I1)/I1
-    Formula: Wp = \\frac{w3 \\left(- I1 + I3\\right)}{I1}
+    Formula: \\Omega_{p} = \\frac{\\omega_{3} \\left(I_{3} - I_{1}\\right)}{I_{1}}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         Wp: precession rate seen in the body frame [rad/s]
@@ -393,7 +393,7 @@ def torque_free_precession(Wp=None, w3=None, I1=None, I3=None, *, target: str | 
 
 def vis_viva(v=None, G=None, M=None, r=None, a=None, *, target: str | None = None):
     """Orbital speed on an elliptical orbit (vis-viva): v = sqrt(G*M*(2/r - 1/a))
-    Formula: v = \\sqrt{G} \\sqrt{M} \\sqrt{\\frac{2}{r} - \\frac{1}{a}}
+    Formula: v = \\sqrt{G M \\left(\\frac{2}{r} - \\frac{1}{a}\\right)}
     Give every quantity but the one to find, as a number with a unit (e.g. '3 kg'); target= picks the unknown.
     Quantities:
         v: orbital speed at distance r [m/s]
